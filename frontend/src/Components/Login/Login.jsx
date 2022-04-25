@@ -27,8 +27,9 @@ const Login = () => {
             
         login({ email, password })
             .then((res) => {
+                console.log(res.data)
                 context.setUserData({
-                    userId: res.data
+                    userData: res.data
                 })
                 navigate('/dashboard');
             })

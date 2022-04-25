@@ -65,6 +65,7 @@ module.exports = {
     getFarmEvents,
     getUsersInterestedEvents,
     getAllUserEvents,
+    signUserForEvent,
 
 
     getFarmEvents

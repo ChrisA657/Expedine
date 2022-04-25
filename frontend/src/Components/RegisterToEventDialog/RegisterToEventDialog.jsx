@@ -11,7 +11,7 @@ import { registerForEvent } from '../../api/userEvents';
 import { UserContext } from '../userContext';
 
 
-const RegisterToEventDialog = ({ open, setOpen, eventId, farmId, farmName, unregistering}) => {
+const RegisterToEventDialog = ({ open, setOpen, event_id, farmId, farmName, unregistering}) => {
 
     const [eventDetails, setEventDetails] = useState({
     })
@@ -36,7 +36,7 @@ const RegisterToEventDialog = ({ open, setOpen, eventId, farmId, farmName, unreg
         } else {
             
             
-            registerForEvent(userContext.userData.userId, eventId).then(()=>{
+            registerForEvent(userContext.userData.userId, event_id).then(()=>{
                 setProcessing(false);
                 setDialogComplete(true);
                 setCompletionText("Successfully registered");
