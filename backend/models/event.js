@@ -27,6 +27,11 @@ const getAllUserEvents = async(user_id) =>{
     return query;
 }
 
+const signUserForEvent = async(user_id, event_id) => {
+    const result = knex(USER_EVENT_TABLE).insert({event_id, customer_id: user_id});
+    return result;
+}
+
 
 //edit event
 const updateEvent = async(event_id, event_name,event_description, event_image_url,farmer_id,date,time) => {
@@ -64,4 +69,3 @@ module.exports = {
 
     getFarmEvents
 };
-
