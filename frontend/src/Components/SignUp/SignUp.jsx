@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { register } from "../../api/account";
 import '../Login/Login.css';
+import { UserContext } from "../userContext";
 export const SignUp = () => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -13,9 +14,11 @@ export const SignUp = () => {
 
 
     const navigate = useNavigate();
+    const userContext = useContext(UserContext);
     
     const handleSubmit = () =>{
-        register({firstName, lastName, email, rUser, rPassword, isFarmer}).then(()=>{
+        register({firstName, lastName, email, rUser, rPassword, isFarmer}).then((res)=>{
+            userContext.setUserData({userData: {userId: res.data}});
             navigate("/dashboard");
         })
     }

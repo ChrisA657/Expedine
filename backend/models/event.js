@@ -59,7 +59,7 @@ module.exports = {
     updateEvent,
     getFarmEvents,
     getUsersInterestedEvents,
-    getAllUserEvents
+    getAllUserEvents,
 
 
     getFarmEvents

@@ -31,4 +31,8 @@ export const deleteEventById = (id) => {
 
 }
 
+export const getEventsByUserId = (userId) =>{
+    return axios.get(`${apiURL}userEvents/${userId}`, apiConfig)
+}
+
 

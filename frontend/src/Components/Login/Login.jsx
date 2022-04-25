@@ -5,7 +5,7 @@ import { SignUp } from "../SignUp/SignUp";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { UserContext } from "../userContext";
 const Login = () => {
-    const [user, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [signUp, setSignUp] = useState(false);
     const [err, setErr] = useState("")
@@ -23,23 +23,16 @@ const Login = () => {
     }, [err]);
 
     const handleLogin = () => {
-        context.setUserData({
-            userId:1,
-            userName:"billy",
-            isFarmer:true,
-            email:"Billybob@gmail.com"
-        });
-       
-        if(location.state?.from){
-            navigate(location.state.from);
-        } else
-            navigate('/dashboard');
-        // login({ user, password })
-        //     .then((res) => {
-        //         localStorage.setItem("userData", res.data);
-        //         console.log("super sucess")
-        //     })
-        //     .catch((err) => alert("error logging in: " + err));
+        
+            
+        login({ email, password })
+            .then((res) => {
+                context.setUserData({
+                    userId: res.data
+                })
+                navigate('/dashboard');
+            })
+            .catch((err) => alert("error logging in: " + err));
 
     }
 
@@ -54,8 +47,8 @@ const Login = () => {
                     Login
                 </div>
                 <div className="form-outline mb-4">
-                    <label htmlFor="user" className="form-label">Username</label>
-                    <input type="text" value={user} className ="form-control" name="user" id="user" onChange={e => setUsername(e.target.value)} />
+                    <label htmlFor="user" className="form-label">Email</label>
+                    <input type="text" value={email} className ="form-control" name="user" id="user" onChange={e => setEmail(e.target.value)} />
                 </div>
                 <div className="form-outline mb-4">
                     <label htmlFor="password" className="form-label"> Password</label>

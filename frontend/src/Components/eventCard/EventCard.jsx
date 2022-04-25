@@ -50,6 +50,7 @@ const EventCard = ({ event_name, event_description, event_id, farmName, event_im
 
     // }
     const handleAction = () => {
+        console.log(openAddOrRemoveDialog)
         if (farmer_id == userContext.userData?.userId) {
             setOpenEditDialog(true);
         } else {
@@ -96,7 +97,7 @@ const EventCard = ({ event_name, event_description, event_id, farmName, event_im
                     color={farmer_id == userContext.userData?.userId ? "error" : "primary"}
                     fullWidth sx={{ padding: [2, 2, 1] }}
                     onClick={() => handleAction()}>
-                    {farmer_id == userContext.userData?.userId ? "Edit Event" : eventContext.events.some(e => e.event_id == event_id) ? "Unsubscribe" : "RSVP"}
+                    {farmer_id == userContext.userData?.userId ? "Edit Event" : eventContext?.events?.some(e => e.event_id == event_id) ? "Unsubscribe" : "RSVP"}
                 </Button>}
             </CardActions>
             {
@@ -127,7 +128,7 @@ const EventCard = ({ event_name, event_description, event_id, farmName, event_im
                                             event_id={event_id}
                                             farmer_id={farmer_id}
                                             farmName={farmName}
-                                            unregistering={eventContext.events.some(e => e.event_id == event_id)} />
+                                            unregistering={eventContext?.events.some(e => e.event_id == event_id)} />
             }
             {/* {
                 openRemoveDialog && <Backdrop

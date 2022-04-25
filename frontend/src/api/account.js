@@ -1,11 +1,11 @@
 import axios from "axios";
 import apiURL from "./APIURL"
 
-const apiEndpoint = apiURL + "accounts"
+const apiEndpoint = apiURL + "account"
 
 
 export const login = (userdata) => new Promise((resolve, reject)=>{
-            axios.post(`${apiEndpoint}/login`, userdata)
+            axios.post(`${apiURL}login`, userdata)
             .then(res => {
                 resolve(res);
                 console.log("sucess")
@@ -15,7 +15,7 @@ export const login = (userdata) => new Promise((resolve, reject)=>{
     
 
 export const register = (userdata) => new Promise((resolve,reject) =>{
-            axios.post(URL + "register", userdata).then(res => {
+            axios.post(`${apiEndpoint}`, userdata).then(res => {
                 console.log(res);
                 resolve(res);
             }).catch(err => {

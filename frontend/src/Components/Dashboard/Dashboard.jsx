@@ -23,7 +23,7 @@ const Dashboard = () => {
             <div className="dashboard-orders">
                 
                 {
-                    orders.map((order)=>{
+                    orders && orders.map((order)=>{
                         return <OrderExpandable key={order.orderId}
                                                {...order}/>
                     })
@@ -33,7 +33,7 @@ const Dashboard = () => {
             <Typography mt={4} mb={4}>My RSVP'D Events</Typography>
             <Grid container spacing={3} sx={{width:["100%"]}}>
                 {
-                    eventContext.events.map((event)=>{
+                    eventContext.events && eventContext.events.map((event)=>{
                         return <Grid item sm={6} md={4} lg={3} width="100%">
                             <EventCard key={event.eventId} setEvents={eventContext.setEvents} {...event}/>
                         </Grid>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Backdrop, CircularProgress, Grid, Input, InputAdornment, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 
@@ -7,6 +7,8 @@ import DialogActions from '@mui/material/DialogActions';
 
 import DialogTitle from '@mui/material/DialogTitle';
 import Checkmark from '../../images/green-checkmark.png';
+import { registerForEvent } from '../../api/userEvents';
+import { UserContext } from '../userContext';
 
 
 const RegisterToEventDialog = ({ open, setOpen, eventId, farmId, farmName, unregistering}) => {
@@ -18,6 +20,7 @@ const RegisterToEventDialog = ({ open, setOpen, eventId, farmId, farmName, unreg
     const [dialogComplete, setDialogComplete] = useState(false);
     const [completionText, setCompletionText] = useState('')
     
+    const userContext = useContext(UserContext);
     const handleChange = (delta) => {
         setEventDetails({ ...eventDetails, ...delta });
     }
@@ -32,13 +35,12 @@ const RegisterToEventDialog = ({ open, setOpen, eventId, farmId, farmName, unreg
             // })
         } else {
             
-            //todo add event to users events table
-
-            // // .then(()=>{
-                   // setProcessing(false);
-            //     setDialogComplete(true);
-            //     setCompletionText("Successfully registered");
-            // })
+            
+            registerForEvent(userContext.userData.userId, eventId).then(()=>{
+                setProcessing(false);
+                setDialogComplete(true);
+                setCompletionText("Successfully registered");
+            })
         }
 
     }
@@ -83,11 +85,18 @@ const RegisterToEventDialog = ({ open, setOpen, eventId, farmId, farmName, unreg
     
     
     return (
-        <div>
-            
-           
+        <Backdrop
+                sx={{ flexDirection: "column", alignItems: "center", color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={true}>
 
-        </div>
+                <Dialog classes={{ root: { alignItems: "center", backgroundColor: "Blue" } }} open={true} onClose={handleClose}>
+                    <DialogTitle sx={{ textAlign: "center", fontWeight: "Bold" }}>Confirm RSVP</DialogTitle>
+                    <DialogActions>
+                        <Button onClick={() => setOpen(false)}>Cancel</Button>
+                        <Button onClick={() => handleSubmit()}>Confirm</Button>
+                    </DialogActions>
+                </Dialog>
+            </Backdrop>
     );
 };
 
