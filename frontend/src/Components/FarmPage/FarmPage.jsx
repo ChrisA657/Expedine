@@ -114,7 +114,7 @@ const FarmPage = () => {
             >
                 {
                     thisfarm.items && thisfarm.items.map((item, index) => {
-                        return <Grid item xs={12} sm={6} md={4} lg={2} key={index} padding={0}>
+                        return <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={index} padding={0}>
                             <ItemCard
                                 {...item}
                                 addText={userContext.userData.userId == params.farmId ? "Edit item" : "Add to cart"}

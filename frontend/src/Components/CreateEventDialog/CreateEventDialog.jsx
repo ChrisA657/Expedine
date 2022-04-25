@@ -27,22 +27,25 @@ const CreateEventDialog = ({ open, setOpen, event_name, event_description, event
 
     useEffect(() => {
         let _time = time;
-        var hours = parseInt(_time.substr(0, 2));
-        if (_time.indexOf('AM') != -1 && hours == 12) {
-            _time = _time.replace('12', '0');
+        if(time) {
+            
+            var hours = parseInt(_time.substr(0, 2));
+            if (_time.indexOf('AM') != -1 && hours == 12) {
+                _time = _time.replace('12', '0');
+            }
+            if (time.indexOf('PM') != -1 && hours < 12) {
+                _time = _time.replace(hours, (hours + 12));
+            }
+            _time = _time.replace(/(AM|PM)/, '');
+            _time = _time.split(' ')[0]
+            console.log(_time);
         }
-        if (time.indexOf('PM') != -1 && hours < 12) {
-            _time = _time.replace(hours, (hours + 12));
-        }
-        _time = _time.replace(/(AM|PM)/, '');
-        _time = _time.split(' ')[0];
-        console.log(_time);
 
         setEventDetails({
             event_name,
             event_description,
             event_image_url,
-            date: new Date(date).toISOString().split('T')[0],
+            date: date ? new Date(date).toISOString().split('T')[0] : '',
             time: _time,
             event_id,
             setEvent,
