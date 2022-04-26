@@ -2,6 +2,7 @@
     height: 225px;
     width: 100%;
     background-color: white;
+    cursor: pointer;
 }
 
 #item-card-price {

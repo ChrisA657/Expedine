@@ -6,7 +6,7 @@ import FarmImg from '../../images/farm.jpg';
 import FarmImg2 from '../../images/farm2.jpg';
 import { useEffect, useRef, useState } from 'react';
 import { item } from '../../models/item';
-import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Checkbox, Container, Grid, MenuItem, Stack, TextField, ToggleButton, Typography } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Box, Button, Checkbox, Container, Divider, Grid, MenuItem, Stack, TextField, ToggleButton, Typography } from '@mui/material';
 import { FarmCard } from '../FarmCard/farmCard';
 import './Feed.css'
 import Search from '../Search/Search';
@@ -104,11 +104,14 @@ export const Feed = () => {
             {
                 loadedFarms.length == 0 && <Typography variant='h2'>No results ...</Typography>
             }
-            <div className={`farm-page-farms pt-4 ${fade ? 'fade':''}`} onAnimationEnd={()=>setFade(false)}>
-                <Typography ref={titleRef}variant='h3' textAlign={'center'} sx={{ fontWeight: '100', mb: 2 }}>{loadedFarms.length == 0 ?'': 'Your Feed'}</Typography>
+            <div className={`farm-page-farms ${fade ? 'fade':''}`} onAnimationEnd={()=>setFade(false)}>
+                <Typography ref={titleRef}variant='h3' textAlign={'center'} sx={{ fontWeight: '100', mb: 2, borderBottom:'1px solid black', margin:'20px auto', width:'fit-content' }}>{loadedFarms.length == 0 ?'': 'Your Feed'}</Typography>
                 {
                     loadedFarms.map((farm, index) => {
-                        return <FarmCard key={farm.FarmId} farm={farm} itemsPerFarm={itemsPerFarm} />
+                        return <>
+                                <FarmCard key={farm.FarmId} farm={farm} itemsPerFarm={itemsPerFarm} />
+                                <Divider variant='middle' sx={{my:4}}/>
+                                </>
                     })
                 }
             </div>

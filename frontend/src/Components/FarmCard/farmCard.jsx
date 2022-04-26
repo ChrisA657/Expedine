@@ -2,13 +2,14 @@ import { Grid, Typography } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import AddItemToCartDialog from '../AddItemToCartDialog/AddItemToCartDialog';
+import EventCard from '../eventCard/EventCard';
 import { ItemCard } from '../ItemCard/itemCard';
 
 import './farmCard.css'
 export const FarmCard = ({ farm, itemsPerFarm }) => {
     const [showAddItemDialog, setShowAddItemDialog] = useState();
     const [addItemDetails, setAddItemDetails] = useState();
-
+    const [refresh, setRefresh] = useState(false);
 
     const handleSetItem = (item) => {
         setShowAddItemDialog(true);
@@ -41,7 +42,7 @@ export const FarmCard = ({ farm, itemsPerFarm }) => {
                     Items for sale
                 </Typography>
                 <Grid container
-                    spacing={1}
+                    spacing={2}
                     direction="row"
                     justifyContent="flex-start"
                     alignItems="stretch"
@@ -59,6 +60,24 @@ export const FarmCard = ({ farm, itemsPerFarm }) => {
                     }
                 </Grid>
             </Grid>
+            {
+            farm.events.length != 0 && <Grid container textAlign={"center"}>
+                <Typography variant='h4' fontWeight={"bold"} mt={4} mb={2} textAlign={"center"}>
+                    Farm Events
+                </Typography>
+                <Grid container rowSpacing={1} columnSpacing={[0, 1]} sx={{ width: ["100%"] }}>
+                {
+                    farm.events.map((event) => {
+                        return <Grid item sm={6} md={4} lg={3} width="100%">
+                            <EventCard farmName={farm.farmName}
+                                        setRefresh={setRefresh}
+                                        farmer_id={event.farmer_id}
+                                {...event} />
+                        </Grid>
+                    })
+                }
+            </Grid>
+            </Grid>}
             {showAddItemDialog && <AddItemToCartDialog
                 open={showAddItemDialog}
                 setOpen={setShowAddItemDialog}

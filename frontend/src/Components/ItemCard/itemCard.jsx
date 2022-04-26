@@ -10,8 +10,8 @@ import { createTheme, responsiveFontSizes, ThemeProvider, styled } from '@mui/ma
 export const ItemCard = ({ product_name, product_description, product_image_url, product_price, product_stock, product_category, product_id, farmer_id, addText, action, noDetails }) => {
     return (
 
-        <Card variant="outlined" sx={{ backgroundColor: '#66d29a', height: "100%", minHeight:'420px', maxWidth:'350px', margin:'0 auto', display: "flex", flexDirection: "column", justifyContent: "space-between", boxShadow: '1px 1px 10px 1px #C0C0C0;', border: "none", borderRadius: '16px' }} >
-            <img src={product_image_url} id="item-card-image" />
+        <Card variant="outlined" sx={{ backgroundColor: '#66d29a', height: "100%", minHeight:'420px', margin:'0 auto', display: "flex", flexDirection: "column", justifyContent: "space-between", boxShadow: '1px 1px 10px 1px #C0C0C0;', border: "none", borderRadius: '16px' }} >
+            <img  src={product_image_url} id="item-card-image" onClick={() => action({ product_name, product_description, product_image_url, product_id, product_stock, product_price, product_category, farmer_id })} />
 
             <CardContent sx={{ textAlign: ["start", "start"], flexGrow: 1 }}>
                 {!noDetails && <div style={{ position: 'relative' }}>
