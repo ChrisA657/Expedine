@@ -28,7 +28,7 @@ const Dashboard = () => {
             setfarmId(res.data[0]?.farmer_id);
         })
 
-        getOrders(userContext.userData?.isFarmer).then(res=> {
+        getOrders(userContext.userData?.user_id).then(res=> {
             let _orders = [];
             res.data.forEach(order=> {
                 console.log(order)

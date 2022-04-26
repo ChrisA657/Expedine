@@ -35,6 +35,7 @@ export const NavBar = () => {
 
    
     getFarmOwnerID(userContext.userData.user_id).then((res)=>{
+        if(res.data[0])
         setPages([...pages, {display: 'My Farm', path:`/farms/${res.data[0]?.farmer_id}`}]);
     }) 
   }
