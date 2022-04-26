@@ -80,4 +80,4 @@ module.exports = {
     updateFarmInformation,
     findFarmByOwner,
     getFarmIDsThroughName
-}
+};

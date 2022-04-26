@@ -10,7 +10,7 @@ import {
 
 import axios from 'axios';
 import { NavBar } from './Components/NavBar/NavBar';
-// import { Home } from './Components/Home/Home';
+import { Home } from './Components/Home/Home';
 import { Feed } from './Components/Feed/Feed';
 import Login from './Components/Login/Login';
 import FarmPage from './Components/FarmPage/FarmPage';
@@ -20,7 +20,7 @@ import { SignUp } from './Components/SignUp/SignUp';
 import Dashboard from './Components/Dashboard/Dashboard';
 import { PROTECTED_ROUTES } from './Components/ProtectedRoutes';
 import { EventProvider } from './Components/EventContext';
-import { Home } from './Components/Home/Home';
+import Reset from './Components/Reset/Reset';
 
 // React functional component
 function App() {
@@ -47,45 +47,33 @@ function App() {
 
     }, [])
 
-    return ( <
-        UserProvider >
-        <
-        EventProvider >
-        <
-        Router >
-        <
-        NavBar / >
-        <
-        Routes >
-        <
-        Route exact path = '/'
-        element = { < Home / > }
-        />
-
-        <
-        Route path = '/login'
-        element = { < Login / > }
-        /> <
-        Route path = '/signup'
-        element = { < SignUp / > }
-        /> {
-            PROTECTED_ROUTES.map((route, index) => {
-                        return <Route path = { route.path }
-                        element = { < ProtectedContent > { route.element } < /ProtectedContent>}
-                            key = { index } > { route.children } <
-                            /Route>
-
-                        })
-                } <
-                Route path = '*'
-            element = { < Navigate to = '/'
-                replace / > }
-            /> <
-            /Routes> <
-            /Router> <
-            /EventProvider> <
-            /UserProvider>
-        )
+    return (
+        <UserProvider>
+          <EventProvider>
+            <Router>
+              <NavBar />
+              <Routes>
+                <Route exact path='/' element={<Home />} />
+    
+                <Route path='/login' element={<Login />} />
+                <Route path='/signup' element={<SignUp />} />
+                <Route path='/reset' element={<Reset />} />
+                {
+                  PROTECTED_ROUTES.map((route, index) => {
+                    return <Route path={route.path}
+                      element={<ProtectedContent> {route.element} </ProtectedContent>}
+                      key={index}>
+                      {route.children}
+                    </Route>
+    
+                  })
+                }
+                <Route path='*' element={<Navigate to='/' replace />} />
+              </Routes>
+            </Router>
+          </EventProvider>
+        </UserProvider>
+      )
     }
-
+    
     export default App;
