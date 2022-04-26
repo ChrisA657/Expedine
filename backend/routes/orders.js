@@ -14,18 +14,18 @@ router.post('/', async(req, res, next) => {
             res.status(500).json({ message: err.toString() });
         }
 
-        next();
-    })
-    //4.1 get cart
-router.get('/:user_id', async(req, res, next) => {
-        try {
-            const body = req.body;
-            const result = await Product.fetchCartProducts(req.params.user_id);
-            res.status(200).json(result);
-        } catch (err) {
-            console.error('Failed to get products in cart:', err);
-            res.status(500).json({ message: err.toString() });
-        }
+    next();
+})
+//4.1 get cart
+router.get('/:user_id', async (req, res, next) => {
+    try {
+        const user_id=req.params.user_id;
+        const result = await Product.fetchCartProducts(user_id);
+        res.status(200).json(result);
+    } catch (err) {
+        console.error('Failed to get products in cart:', err); 
+        res.status(500).json({ message: err.toString() });
+    }
 
         next();
     })
