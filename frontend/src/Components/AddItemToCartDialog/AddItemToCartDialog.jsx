@@ -37,7 +37,7 @@ const AddItemToCartDialog = ({ open, setOpen, product_name, product_description,
     const handleSubmit = () => {
         if(!quantity) return;
         setProcessing(true);
-        addItemToCart({product_id, product_stock: quantity, user_id: userContext.userData.user_id}).then(setCompleted(true));
+        addItemToCart({product_id, quantity: quantity, user_id: userContext.userData.user_id}).then(setCompleted(true));
         
 
 

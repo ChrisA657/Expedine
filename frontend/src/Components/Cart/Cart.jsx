@@ -96,7 +96,7 @@ export const Cart = () => {
                                 <Typography key={index} sx={{ py: 1, px: 0 }}>
                                     <Typography variant="h5" sx={{ fontWeight: "bold", textAlign: ['center'] }}>{orders.length > 1 && `Order: ${index + 1}`}</Typography>
                                     <List>
-
+ 
                                         {
                                             order.map((item, index) => {
                                                 return <>
@@ -104,7 +104,7 @@ export const Cart = () => {
                                                         <ListItemText primary={<Typography variant='h6'>{item.product_name}</Typography>} secondary={<><div style={{ marginLeft: "6px" }}>{item.product_description}</div>
                                                             <Stack sx={{ textAlign: "start", alignItems: "start", my: 1.5 }}>
                                                                 <Typography >Price: ${item.product_price}</Typography>
-                                                                <Typography >Quantity: {item.product_stock}</Typography>
+                                                                <Typography >Quantity: {item.quantity}</Typography>
                                                                 <Typography sx={{ fontWeight: "bold", }}>Total: ${item.product_price * item.product_stock}</Typography>
                                                             </Stack>
                                                             <Button variant='outlined' color='error' sx={{ mt: 1 }} onClick={() => deleteItem(item.product_id)}>Remove</Button></>} />

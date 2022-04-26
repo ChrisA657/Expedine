@@ -109,7 +109,7 @@ export const Checkout = () => {
                         required
                         id="firstName"
                         product_name="firstName"
-                        label="First product_name"
+                        label="First"
                         fullWidth
                         value={firstName}
                         onChange={e => setFirstName(e.target.value)}
@@ -122,7 +122,7 @@ export const Checkout = () => {
                         required
                         id="lastName"
                         product_name="lastName"
-                        label="Last product_name"
+                        label="Last"
                         fullWidth
                         value={lastName}
                         onChange={e => setLastName(e.target.value)}
