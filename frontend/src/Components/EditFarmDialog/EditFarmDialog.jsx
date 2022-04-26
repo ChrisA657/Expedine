@@ -64,7 +64,7 @@ const EditFarmDialog = ({ open, setOpen, farm_name, farm_description, farm_image
         <div>
             <Dialog open={open} onClose={handleClose}>
                 <>
-                    <DialogTitle sx={{ textAlign: "center", fontWeight: "Bold" }}>Edit the details of your farm</DialogTitle>
+                    <DialogTitle sx={{ textAlign: "center", fontWeight: "Bold" }}>{creating ? 'Provide details of your farm' : 'Edit the details of your farm'}</DialogTitle>
                     <DialogContent>
                         <img src={farmDetails.farm_image_url} style={{ minWidth: '200px', maxWidth: '60%', display: 'block', margin: '0 auto' }} />
                         <TextField

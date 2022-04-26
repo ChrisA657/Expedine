@@ -14,14 +14,10 @@ import MenuItem from '@mui/material/MenuItem';
 import './NavBar.css';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { UserContext } from '../userContext';
+import { getFarmOwnerID } from '../../api/farms';
 
-const pages = [
-  { display: "Dashboard", path: "/dashboard" },
-  { display: "Feed", path: "/feed" },
-  { display: "My Farm", path: "/farms/1" },
-];
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+
 
 export const NavBar = () => {
 
@@ -29,8 +25,20 @@ export const NavBar = () => {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [pages, setPages] = React.useState([
+    { display: "Dashboard", path: "/dashboard" },
+    { display: "Feed", path: "/feed" },
+  ]);
 
+  React.useEffect(()=>{
+    if(userContext.userData?.isFarmer){
 
+   
+    getFarmOwnerID(userContext.userData.user_id).then((res)=>{
+        setPages([...pages, {display: 'My Farm', path:`/farms/${res.data[0].farmer_id}`}]);
+    }) 
+  }
+},[userContext])
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -52,7 +60,7 @@ export const NavBar = () => {
   const redirect = (route) =>{
     navigate(route);
   }
-  console.log(userContext.userData)
+
   return (
     <nav className="main-navbar">
       <AppBar position="static">

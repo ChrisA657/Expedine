@@ -42,15 +42,27 @@ export const Feed = () => {
     useEffect(() => {
 
         //TODO get the first ten farm items
-        getFarmById(1).then(res => setLoadedFarms([
-            ...loadedFarms, {
-            farmId: res.data.farmInfo[0].farmer_id,
-            farmName: res.data.farmInfo[0].farm_name,
-            farmDescription: res.data.farmInfo[0].farm_description,
-            farmImage: res.data.farmInfo[0].farm_image_url,
-            items: res.data.products,
-            events: res.data.events}
-        ]));
+        for(let i = 1; i < 10; i++)
+        {
+            getFarmById(i).then( (res) => {
+                    if(res.data.farmInfo.length !=0){
+                        setLoadedFarms(farms => [
+                        ...farms, 
+                            {
+                                farmId: res.data.farmInfo[0].farmer_id,
+                                farmName: res.data.farmInfo[0].farm_name,
+                                farmDescription: res.data.farmInfo[0].farm_description,
+                                farmImage: res.data.farmInfo[0].farm_image_url,
+                                items: res.data.products,
+                                events: res.data.events
+                            }
+                        ])
+                    }
+                });
+            
+        }
+        
+
     }, [])
 
     useEffect(() => {
@@ -68,9 +80,11 @@ export const Feed = () => {
             setSmallScreen(true);
         } else setSmallScreen(false);
     })
+
+
     return (
         <div id="feed">
-
+           
             {smallScreen ?
                 <Accordion sx={{ backgroundColor: "rgb(41, 44, 47)", color: 'white' }}>
                     <AccordionSummary
@@ -87,8 +101,11 @@ export const Feed = () => {
                 : 
                 <Search searchObject={searchParams} setSearchObject={setSearchParams} setFarms={setLoadedFarms} verticalFilters={true} header='Search Farms'/>
             }
+            {
+                loadedFarms.length == 0 && <Typography variant='h2'>No results ...</Typography>
+            }
             <div className={`farm-page-farms pt-4 ${fade ? 'fade':''}`} onAnimationEnd={()=>setFade(false)}>
-                <Typography ref={titleRef}variant='h3' textAlign={'center'} sx={{ fontWeight: '100', mb: 2 }}>Your Feed</Typography>
+                <Typography ref={titleRef}variant='h3' textAlign={'center'} sx={{ fontWeight: '100', mb: 2 }}>{loadedFarms.length == 0 ?'': 'Your Feed'}</Typography>
                 {
                     loadedFarms.map((farm, index) => {
                         return <FarmCard key={farm.FarmId} farm={farm} itemsPerFarm={itemsPerFarm} />

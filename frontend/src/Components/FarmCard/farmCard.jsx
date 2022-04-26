@@ -20,10 +20,11 @@ export const FarmCard = ({ farm, itemsPerFarm }) => {
                   justifyContent={["center", "space-between"]}
                   spacing={2}>
                 <Grid item xs={12} sm={12} md={6} justifyContent={"flex-end"}>
-                    <img src={farm.farmImage} id="farm-img" alt={farm.farmName} />
+                    <Link to={'/farms/'+farm.farmId}>
+                    <img src={farm.farmImage} id="farm-img" alt={farm.farmName} /></Link>
                 </Grid>
                 <Grid item sm={12} md={6} sx={{display:'flex', flexDirection:'column', justifyContent:'center'}}>
-                    <div className="text-center fs-2 fw-bold mb-3 text-decoration-underline" >{farm.farmName}</div>
+                <Link to={'/farms/'+farm.farmId}><div className="text-center fs-2 fw-bold mb-3 text-decoration-underline" >{farm.farmName}</div></Link>
                     <Typography component={'span'}>
                         <div className="farm-description text-muted">
                             Lorem ipsum dolor sit amet consectetur adipisicing elit.
