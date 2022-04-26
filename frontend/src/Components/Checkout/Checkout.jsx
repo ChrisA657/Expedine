@@ -30,6 +30,7 @@ export const Checkout = () => {
     ])
     const [orders, setOrders] = useState(null);
     const [total, setTotal] = useState(0);
+    const [orderNumbers, setOrderNumbers] = useState('');
 
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -57,9 +58,13 @@ export const Checkout = () => {
 
     const handleSubmit = () => {
         console.log(orders)
-        orders.forEach(order=>{
-            createNewOrder({customer_id: userContext.userData.user_id, farmer_id: order[0].farmer_id ,firstName,lastName,address,city,state,zip,cardName,cardNumber,cardExprDate}).then(()=>handleNext())
-        })
+        
+            createNewOrder({customer_id: userContext.userData.user_id, farmer_id: orders[0].farmer_id ,firstName,lastName,address,city,state,zip,cardName,cardNumber,cardExprDate}).
+            then((res)=> {
+                setOrderNumbers(res.data.result1[0].transaction_id)
+                setActiveStep(4);
+            })
+       
         
         handleNext();
         
@@ -380,7 +385,7 @@ export const Checkout = () => {
                             Thank you for your order.
                         </Typography>
                         <Typography variant="subtitle1">
-                            Your order number is #2001539. We have notified the farmer of your purchase
+                            Your order number is {orderNumbers} We have notified the farmer of your purchase
                             and he will work to fulfill your order as soon as possible. You can view the
                             status of your order on your <Link to='/dashboard'>dashboard</Link>
                         </Typography>
