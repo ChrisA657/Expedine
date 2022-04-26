@@ -101,7 +101,7 @@ VALUES (8, 1, 3);
 #
 # );
 
-SELECT * FROM event;
+SELECT * FROM transactions;
 
 INSERT INTO users(email, password, first_name, last_name, isFarmer)
 VALUES ('smu@email.edu', 'Password123', 'John', 'Deere', 1),

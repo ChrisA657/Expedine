@@ -15,7 +15,7 @@ router.get('/transactions/:user_id', async (req, res, next) => {
     next();
 });
 //7.4 + 7.5 get transaction by id
-router.get('/transactions/:transaction_id', async (req, res, next) => {
+router.get('/transactions/customer/:transaction_id', async (req, res, next) => {
     try {
         const transaction_id=req.params.transaction_id;
         const result = await dash.fetchTransactionWithProducts(transaction_id);
