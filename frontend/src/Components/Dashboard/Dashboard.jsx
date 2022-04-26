@@ -30,18 +30,18 @@ const Dashboard = () => {
             setfarmId(res.data[0]?.farmer_id);
         })
 
-        // getOrders(2).then(res=> {
-        //     res.data.forEach(order=> {
-        //         console.log(order)
-        //         let items = order.result2;
-        //         let info = order.result1;
+        getOrders(2).then(res=> {
+            res.data.forEach(order=> {
+                console.log(order)
+                let items = order.result2;
+                let info = order.result1;
 
-        //         setOrders(orders =>{
-        //             // [...orders,{...info,itemsPurchased: items}]
-        //         })
-        //     })
+                setOrders(orders =>{
+                    // [...orders,{...info,itemsPurchased: items}]
+                })
+            })
             
-        // })
+        })
     }
     },[])
 
