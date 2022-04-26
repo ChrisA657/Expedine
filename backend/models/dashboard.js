@@ -13,7 +13,7 @@ const fetchTransactions = async (user_id) => {
     }
     return transactions;
 };
-//get most common customers    //untested
+//6.6 get most common customers    //untested
 const fetchMostCommonCustomers = async (farmer_id) => {
     //return transaction
     const query = knex('transactions').select().where({farmer_id}).groupBy(customer_id).orderBy(name,desc).limit(3);
