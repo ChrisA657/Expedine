@@ -20,7 +20,7 @@ const Reset = () => {
         }
         getUserID(User).then(x => setRUsername(x[0].user_id))
         .then(resetPassword(RUser, Password)).then(() => {
-            navigate("/login");
+            // navigate("/login");
         }
         )
     }
