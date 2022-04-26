@@ -18,9 +18,9 @@ const Reset = () => {
         if(Password != cPassword){
             alert("Passwords do not match");
         }
-        getUserID(User).then(x => {setRUsername(x[0].user_id); console.log(RUser);})
+        getUserID(User).then(x => setRUsername(x[0].user_id))
         .then(resetPassword(RUser, Password)).then(() => {
-            navigate("/login");
+            // navigate("/login");
         }
         )
     }
@@ -41,8 +41,8 @@ const Reset = () => {
                     <input type="password" className ="form-control" value={Password} name="user" id="password" onChange={event => setPassword(event.target.value)} />
                 </div>
                 <div className="form-outline mb-4">
-                    <label htmlFor="cpassword" className="form-label"> Confirm Password</label>
-                    <input type="cpassword" className ="form-control" value={cPassword} name="user" id="cpassword" onChange={event => setCPassword(event.target.value)} />
+                    <label htmlFor="password" className="form-label"> Confirm Password</label>
+                    <input type="password" className ="form-control" value={cPassword} name="user" id="password" onChange={event => setCPassword(event.target.value)} />
                 </div>
                 <button type="button" className="btn btn-primary mb-4" onClick={() => handleSubmit()}>Reset Password</button>
             </div>
