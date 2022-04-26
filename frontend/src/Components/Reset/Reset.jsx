@@ -1,24 +1,26 @@
 import { useState, useEffect} from "react";
 import './Reset.css';
-import { resetPassword } from "../../api/account";
-import { Link, useNavigate } from "react-router-dom";
+import { resetPassword, getUserID } from "../../api/account";
+import { useNavigate } from "react-router-dom";
 
 const Reset = () => {
     const [User, setUsername] = useState("");
+    const [RUser, setRUsername] = useState("");
     const [Password, setPassword] = useState("");
     const [cPassword, setCPassword] = useState("");
 
     const navigate = useNavigate();
 
     useEffect(() => {
-    }, []);
+        getUserID(User).then(x => setRUsername(x[0].user_id));
+    }, [ User, RUser ]);
 
     const handleSubmit = () => {
         if(Password != cPassword){
             alert("Passwords do not match");
         }
-        const User = 1;
-        resetPassword(User, Password).then(()=>{
+        console.log(RUser);
+        resetPassword(RUser, Password).then(()=>{
             navigate("/login");
         })
     }
