@@ -27,6 +27,17 @@ router.post('/', async (req, res) =>{
 
 })
 
+router.delete('/:user_id/:event_id', async (req, res) => {
+    try {
+        const result = await Event.unRegisterFromEvent(req.params.user_id, req.params.event_id);
+        res.status(204).json(result);
+    } catch (err) {
+        console.error('Failed to delete all interested events:', err);
+        res.status(500).json({ message: err.toString() });
+    }
+
+})
+
 
 
 module.exports = router;
