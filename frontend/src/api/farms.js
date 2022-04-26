@@ -17,6 +17,9 @@ export const getFarm = (params) => {
     return axios.get(`${apiEndpoint}/`, _apiConfig)
                 
 }
+export const searchFarms = (searchData) => {
+    axios.post(apiUrl+"/search", {searchData} );
+}
 // get a specific farm information, used for viewing specfic farms
 export const getFarmById = (id) => axios.get(`${apiEndpoint}/${id}`, apiConfig);  
 
