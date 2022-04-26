@@ -96,7 +96,7 @@ export const Cart = () => {
                                 <Typography key={index} sx={{ py: 1, px: 0 }}>
                                     <Typography variant="h5" sx={{ fontWeight: "bold", textAlign: ['center'] }}>{orders.length > 1 && `Order: ${index + 1}`}</Typography>
                                     <List>
-
+ 
                                         {
                                             order.map((item, index) => {
                                                 return <>
