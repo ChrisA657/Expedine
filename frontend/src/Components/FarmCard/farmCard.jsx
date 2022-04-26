@@ -27,10 +27,7 @@ export const FarmCard = ({ farm, itemsPerFarm }) => {
                 <Link to={'/farms/'+farm.farmId}><div className="text-center fs-2 fw-bold mb-3 text-decoration-underline" >{farm.farmName}</div></Link>
                     <Typography component={'span'}>
                         <div className="farm-description text-muted">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                            Obcaecati culpa aliquid expedita,
-                            repudiandae suscipit omnis ratione recusandae
-                            dicta laudantium atque dolores laboriosam ipsa delectus fugiat. Obcaecati ex similique dolores adipisci?
+                            
                             {farm.farmDescription}
                         </div>
                     </Typography>

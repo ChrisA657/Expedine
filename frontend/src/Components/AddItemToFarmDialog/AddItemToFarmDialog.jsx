@@ -17,7 +17,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 const categories = ["Fruit", "Machinery", 'Livestock'];
 // TODO Add fail logic and style to adding item
 // If we are passed an item Id, we are editing
-const AddItemToFarmDialog = ({ open, setOpen, product_name, product_description, product_price, product_category, product_stock, product_image_url, farmer_id, product_id, returnToFarm }) => {
+const AddItemToFarmDialog = ({ open, setOpen, product_name, product_description, product_price, product_category, product_stock, product_image_url, farmer_id, product_id, custom, returnToFarm, }) => {
 
     const [itemDetails, setItemDetails] = useState({
     });
@@ -29,16 +29,25 @@ const AddItemToFarmDialog = ({ open, setOpen, product_name, product_description,
     const timer2 = useRef();
     useEffect(() => {
         console.log("here" + farmer_id)
-        setItemDetails({
-            product_name: product_name,
-            product_description: product_description,
-            product_category: product_category,
-            product_image_url: product_image_url,
-            product_price: product_price ? product_price : 1,
-            product_stock: product_stock ? product_stock : 1,
-            farmer_id: params.farmId,
-            product_id: product_id,
-        })
+        if (!custom){
+            setItemDetails({
+                product_name: product_name,
+                product_description: product_description,
+                product_category: product_category,
+                product_image_url: product_image_url,
+                product_price: product_price ? product_price : 1,
+                product_stock: product_stock ? product_stock : 1,
+                farmer_id: params.farmId,
+                product_id: product_id,
+            })
+        } else {
+            setItemDetails({
+                product_price:  1,
+                product_stock: 1,
+                farmer_id: params.farmId,
+                product_id: product_id,
+            })
+        }
 
         return () => {
             clearTimeout(timer.current)
@@ -101,11 +110,21 @@ const AddItemToFarmDialog = ({ open, setOpen, product_name, product_description,
         <div>
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle sx={{ textAlign: "center", fontWeight: "Bold" }}>{product_id ? "Edit your item" : "Add Item To Your Farm"}</DialogTitle>
-               
+
                 <DialogContent>
                     <DialogContent sx={{ display: "flex", justifyContent: "center", padding: 0, margin: ["24px 0", "24px"] }}>
-                        <img src={product_image_url} id="add-item-img" />
+                        <img src={itemDetails.product_image_url} id="add-item-img" />
                     </DialogContent>
+                    {custom && <TextField
+                        sx={{ marginBottom: '18px' }}
+                        required
+                        id="product_imageUrl"
+                        label="Image"
+                        fullWidth
+                        value={itemDetails.product_image_url}
+                        onChange={e => handleChange({ product_image_url: e.target.value })}
+
+                    /> }
                     <TextField
 
                         required
@@ -128,33 +147,33 @@ const AddItemToFarmDialog = ({ open, setOpen, product_name, product_description,
                         onChange={e => handleChange({ product_description: e.target.value })}
 
                     />
-                        <TextField
-                            sx={{ alignSelf: "flex-start", mt:2 }}
-                            InputProps={{ startAdornment: <InputAdornment position="start">$</InputAdornment> }}
-                            inputProps={{ pattern: "[0-9]*", type: "number", inputMode: "numeric" }}
-                            id="product_price"
-                            label="Price"
-                            pattern={"[0-9]*"}
-                            inputMode={"numeric"}
-                            value={itemDetails.product_price}
-                            onChange={e => handleChange({ product_price: e.target.value })}
+                    <TextField
+                        sx={{ alignSelf: "flex-start", mt: 2 }}
+                        InputProps={{ startAdornment: <InputAdornment position="start">$</InputAdornment> }}
+                        inputProps={{ pattern: "[0-9]*", type: "number", inputMode: "numeric" }}
+                        id="product_price"
+                        label="Price"
+                        pattern={"[0-9]*"}
+                        inputMode={"numeric"}
+                        value={itemDetails.product_price}
+                        onChange={e => handleChange({ product_price: e.target.value })}
 
 
-                        />
+                    />
                     <Box sx={{ display: "flex", flexDirection: ["column", "row", "row"], justifyContent: "space-between", marginTop: "18px", gap: "20px" }}>
                         <FormControl>
-                        <InputLabel >Category</InputLabel>
+                            <InputLabel >Category</InputLabel>
                             <Select
                                 labelId="Category"
                                 id="category"
                                 value={itemDetails.product_category || categories[0]}
                                 label="Category"
-                                onChange={ e => handleChange({ product_category: e.target.value })}
+                                onChange={e => handleChange({ product_category: e.target.value })}
                             >
                                 {
-                                categories.map((category,i)=>{
-                                    return <MenuItem value={category}>{category}</MenuItem>
-                                })
+                                    categories.map((category, i) => {
+                                        return <MenuItem value={category}>{category}</MenuItem>
+                                    })
                                 }
                             </Select>
                         </FormControl>

@@ -63,9 +63,17 @@ const FarmItemAdder = ({close}) => {
                 my={4}
                 padding={4}
             >
+                <Grid item xs={12} sm={6} md={3} lg={3} xl={2}>
+                            <ItemCard product_name={"Custom Item"}
+                                product_image_url={"https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Question_mark_grey.svg/1200px-Question_mark_grey.svg.png"}
+                                product_description={"Your own Unique item"}
+                                addText={"Add to farm"}
+                                noDetails={true}
+                                action={(item) => addToFarm({...item, custom:true})} />
+                </Grid>
                 {
                     itemsFound.map((item) => {
-                        return <Grid key={item.product_name}item xs={12} sm={6} md={3} lg={2}>
+                        return <Grid key={item.product_name}item xs={12} sm={6} md={3} lg={3} xl={2}>
                             <ItemCard product_name={item.product_name}
                                 product_image_url={item.product_image_url}
                                 product_description={item.product_description}
