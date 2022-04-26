@@ -21,10 +21,10 @@ router.get('/:farmer_id', async(req, res) => {
 
 })
 
-router.put('/', async(req, res) => {
+router.put('/:farmer_id', async(req, res) => {
     try {
         const body = req.body;
-        const result = await Farm.updateFarmInformation(body.farmer_id, body.farm_name, body.farm_description, body.farm_image_url, body.date_founded);
+        const result = await Farm.updateFarmInformation(req.params.farmer_id, body.farm_name, body.farm_description, body.farm_image_url, body.date_founded);
         res.status(201).json(result);
     } catch (err) {
         console.error('Failed to update farm information:', err);
@@ -108,7 +108,6 @@ router.get('/farm/:farm_established', async(req, res, next) => {
     next();
 })
 
-
 //delete farm
 router.delete('/:farm_name', async(req, res) => {
     //
@@ -121,6 +120,4 @@ router.delete('/:farm_name', async(req, res) => {
     }
 })
 
-
-
-module.exports = router
+module.exports = router;

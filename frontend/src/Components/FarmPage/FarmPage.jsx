@@ -70,7 +70,7 @@ const FarmPage = () => {
             }));
         }
         console.log(thisfarm)
-    }, [showCreateEvent, showAddItem, showEditItemDialog, refresh]);
+    }, [showCreateEvent, showAddItem, showEditItemDialog, showEditFarm, refresh]);
 
 
     if (showAddItem)
@@ -166,16 +166,16 @@ const FarmPage = () => {
             {
                 showEditFarm && <EditFarmDialog open={showEditFarm}
                     setOpen={setShowEditFarm}
-                    farmName={thisfarm.farmName}
-                    farmDescription={thisfarm.farmDescription}
-                    farmImage={thisfarm.farmImage}
+                    farm_name={thisfarm.farmName}
+                    farm_description={thisfarm.farmDescription}
+                    farm_image_url={thisfarm.farmImage}
                     farmId={params.farmId} />
             }
 
             {showCreateEvent && <CreateEventDialog 
                                     open={showCreateEvent} 
                                     setOpen={setShowCreateEvent} 
-                                    farmId={params.farmId}
+                                    farmer_id={params.farmId}
                                      />}
         </div>
     </>;

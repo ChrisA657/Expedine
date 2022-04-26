@@ -15,7 +15,7 @@ import { createEvent, deleteEventById, updateEventById } from '../../api/events'
 // When editing an event, all fields should be passed in
 // When deleting an event, all fields should be passed in
 const CreateEventDialog = ({ open, setOpen, event_name, event_description, event_image_url, date, time, event_id, setEvent, farmer_id, farmName, showDelete, setRefresh }) => {
-    console.log(time)
+    console.log(farmer_id)
     const [eventDetails, setEventDetails] = useState({
     })
     const [previewing, setPreviewing] = useState(false);
