@@ -25,7 +25,6 @@ CREATE TABLE farmer (
 CREATE TABLE transactions(
 	transaction_id integer auto_increment, primary key(transaction_id),
     customer_id INTEGER NOT NULL, FOREIGN KEY (customer_id) REFERENCES users(user_id),
-    farmer_id INTEGER NOT NULL, FOREIGN KEY (farmer_id) REFERENCES farmer(farmer_id),
     is_complete tinyint(1) NOT NULL DEFAULT FALSE,
     purchaseDate TIMESTAMP,
     firstName VARCHAR(50),
@@ -78,6 +77,13 @@ CREATE TABLE transaction_products(
     product_id INTEGER NOT NULL, FOREIGN KEY (product_id) REFERENCES product(product_id),
     quantity INTEGER
 );
+SELECT * FROM product;
+SELECT * FROM transactions;
+SELECT * FROM transaction_products;
+INSERT INTO transaction_products(transaction_id, product_id, quantity)
+VALUES (8, 9, 2);
+INSERT INTO transaction_products(transaction_id, product_id, quantity)
+VALUES (8, 1, 3);
 
 # CREATE TABLE requests(
 #     request_id INTEGER NOT NULL AUTO_INCREMENT, PRIMARY KEY (request_id),
