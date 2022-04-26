@@ -78,6 +78,13 @@ CREATE TABLE transaction_products(
     product_id INTEGER NOT NULL, FOREIGN KEY (product_id) REFERENCES product(product_id),
     quantity INTEGER
 );
+SELECT * FROM product;
+SELECT * FROM transactions;
+SELECT * FROM transaction_products;
+INSERT INTO transaction_products(transaction_id, product_id, quantity)
+VALUES (8, 9, 2);
+INSERT INTO transaction_products(transaction_id, product_id, quantity)
+VALUES (8, 1, 3);
 
 # CREATE TABLE requests(
 #     request_id INTEGER NOT NULL AUTO_INCREMENT, PRIMARY KEY (request_id),
