@@ -5,13 +5,11 @@
 .eventTitle {
     font-weight: bold;
     color: #3B8EDE;
-
 }
 
 .details {
     margin-left: 10%;
     margin-right: 10%;
-
 }
 
 svg {
@@ -26,7 +24,9 @@ i {
 .eventImage {
     margin-top: 10%;
     margin-bottom: 10%;
-    display: inline;
+    margin-left: auto;
+    margin-right: 0;
+    display: block;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
 }
