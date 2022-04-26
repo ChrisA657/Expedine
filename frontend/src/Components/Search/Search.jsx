@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Checkbox, Container, Grid, MenuItem, Stack, TextField, ToggleButton, Typography } from '@mui/material';
 import { item } from '../../models/item';
+import { searchFarms } from '../../api/farms';
 const Search = ({ searchObject, setSearchObject, setFarms, justItem, header, verticalFilters, hideSearch }) => {
     const priceSearchOptions = [
         { priceOption: 0, label: "Any", minPrice: 0, maxPrice: 100000 },
@@ -59,6 +60,9 @@ const Search = ({ searchObject, setSearchObject, setFarms, justItem, header, ver
         });
     }
     const search = () => {
+        searchFarms(searchObject).then(res=>{
+            console.log(res.data);
+        })
         //setFarms(getFarms(searchObject));
         setFarms([{
             farmId: 1,

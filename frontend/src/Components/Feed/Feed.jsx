@@ -51,7 +51,7 @@ export const Feed = () => {
             items: res.data.products,
             events: res.data.events}
         ]));
-    }, [searchParams])
+    }, [])
 
     useEffect(() => {
         if(!firstLoad){
