@@ -22,11 +22,12 @@ CREATE TABLE farmer (
     date_founded DATE,
     owner_id INTEGER NOT NULL, FOREIGN KEY (owner_id) REFERENCES users(user_id)
 );
+DROP TABLE transactions, transaction_products;
 CREATE TABLE transactions(
 	transaction_id integer auto_increment, primary key(transaction_id),
     customer_id INTEGER NOT NULL, FOREIGN KEY (customer_id) REFERENCES users(user_id),
     is_complete tinyint(1) NOT NULL DEFAULT FALSE,
-    purchaseDate TIMESTAMP,
+    purchaseDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     firstName VARCHAR(50),
     lastName VARCHAR(50),
     address VARCHAR(50),
@@ -81,9 +82,11 @@ SELECT * FROM product;
 SELECT * FROM transactions;
 SELECT * FROM transaction_products;
 INSERT INTO transaction_products(transaction_id, product_id, quantity)
-VALUES (8, 9, 2);
-INSERT INTO transaction_products(transaction_id, product_id, quantity)
-VALUES (8, 1, 3);
+VALUES (1, 9, 2),
+       (2, 3, 1),
+       (1, 10, 1),
+       (2, 7, 2);
+
 
 # CREATE TABLE requests(
 #     request_id INTEGER NOT NULL AUTO_INCREMENT, PRIMARY KEY (request_id),
@@ -120,11 +123,11 @@ INSERT INTO customer_event_interests(event_id,customer_id)
 VALUES
 (1,2),
 (3, 2);
-
-INSERT INTO transactions(customer_id,farmer_id,product_id,quantity,is_complete,purchaseDate, firstName,lastName,address,city,state,zip,cardName,cardNumber,cardExprDate)
+SELECT * FROM transactions;
+INSERT INTO transactions(customer_id, is_complete, firstName,lastName,address,city,state,zip,cardName,cardNumber,cardExprDate)
 VALUES
-(2,1,1,2,1,CURRENT_TIME,'Mark','Fontenot','123 elm stree','dallas','tx','75205','visa','1111222233334444','05/22'),
-(2,1,2,1,0,CURRENT_TIME,'Mark','Fontenot','123 elm stree','dallas','tx','75205','visa','1111222233334444','05/22');
+(2, 1,'Mark','Fontenot','123 elm stree','dallas','tx','75205','visa','1111222233334444','05/22'),
+(2, 1,'Mark','Fontenot','123 elm stree','dallas','tx','75205','visa','1111222233334444','05/22');
 
 INSERT INTO cart(quantity,customer_id,product_id)
 VALUES
