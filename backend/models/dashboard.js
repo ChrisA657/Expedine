@@ -13,14 +13,14 @@ const fetchTransactions = async (user_id) => {
     }
     return transactions;
 };
-//get most common customers    //untested
-const fetchMostCommonCustomers = async (farmer_id) => {
-    //return transaction
-    const query = knex('transactions').select().where({farmer_id}).groupBy(customer_id).orderBy(name,desc).limit(3);
-    console.log('Raw query for fetchMostCommonCustomerTransaction:', query.toString());
-    const result = await query;
-    return result;
-};
+//6.6 get most common customers    //untested
+// const fetchMostCommonCustomers = async (farmer_id) => {
+//     //return transaction
+//     const query = knex('transactions').select().where({farmer_id}).groupBy(customer_id).orderBy(name,desc).limit(3);
+//     console.log('Raw query for fetchMostCommonCustomerTransaction:', query.toString());
+//     const result = await query;
+//     return result;
+// };
 
 //Get all interested events by customer
 const fetchInterestedEvents = async (user_id) => {

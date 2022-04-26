@@ -1,8 +1,23 @@
 const express = require('express');
 const dash = require('../models/dashboard');
 const router = express.Router();
+
+
+// 6.6 Find most common customers
+// router.get('/transaction/:farmer_id', async (req, res, next) => {
+//     try {
+//         const event_id=req.params.farmer_id;
+//         const body = req.body;
+//         const result = await dash.fetchMostCommonCustomers(farmer_id);
+//         res.status(204).json(result);
+//     } catch (err) {
+//         console.error('Failed to find most common customers:', err);
+//         res.status(500).json({ message: err.toString() });
+//     }
+//
+//     next()
 //7.1 + 7.2 get transactions by user
-router.get('/transactions/:user_id', async (req, res, next) => {
+router.get('/transactions/customer/:user_id', async (req, res, next) => {
     try{
         const user_id=req.params.user_id;
         result = await dash.fetchTransactions(user_id);
@@ -15,7 +30,7 @@ router.get('/transactions/:user_id', async (req, res, next) => {
     next();
 });
 //7.4 + 7.5 get transaction by id
-router.get('/transactions/customer/:transaction_id', async (req, res, next) => {
+router.get('/transactions/:transaction_id', async (req, res, next) => {
     try {
         const transaction_id=req.params.transaction_id;
         const result = await dash.fetchTransactionWithProducts(transaction_id);

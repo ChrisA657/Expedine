@@ -18,11 +18,16 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import { useEffect, useRef, useState } from 'react';
 import { Divider, Grid, Slide, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link, NavLink, useNavigate } from 'react-router-dom';
+import Container from '@mui/material/Container';
+
+
 
 export const Home = () => {
+
     const theme = createTheme({
         typography: {
             fontFamily: [
@@ -31,88 +36,105 @@ export const Home = () => {
         }
     });
 
+
     return (
         <>
-            {<ThemeProvider theme={theme}>
-                <div className="home-container">
-                    <Card sx={{ display: 'flex' }}>
-                        <div id="landingImg">
-                            <CardMedia
-                                component="img"
-                                sx={{ width: 450 }}
-                                image={LandingImage}
-                                alt="Landing Img"
-                            />
-                        </div>
 
-                        <div id="header">
-                            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                                <CardContent sx={{ flex: '1 0 auto' }}>
-                                    <Typography variant='h2' textAlign={'center'} sx={{ fontWeight: '100', mb: 2, }}>
-                                        Welcome to Farm
-                                    </Typography>
-                                    <Typography variant='h2' textAlign={'center'} sx={{ fontWeight: '100', mb: 2 }}>
-                                        Finders
-                                    </Typography>
+            <Grid
+                container
+                spacing={0}
+                direction="column"
+                alignItems="center"
+                justifyContent="center"
+                style={{ minHeight: '100vh' }}
+            >
+
+                <Grid item xs={3}>
+                    {<ThemeProvider theme={theme}>
+                        <div className="home-container">
+                            <Card sx={{ display: 'flex' }}>
+                                <div id="landingImg">
+                                    <CardMedia
+                                        component="img"
+                                        sx={{ width: 450 }}
+                                        image={LandingImage}
+                                        alt="Landing Img"
+                                    />
+                                </div>
+
+                                <div id="header">
+                                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                                        <CardContent sx={{ flex: '1 0 auto' }}>
+                                            <Typography variant='h2' textAlign={'center'} sx={{ fontWeight: '100', mb: 2, }}>
+                                                Welcome to Farm
+                                            </Typography>
+                                            <Typography variant='h2' textAlign={'center'} sx={{ fontWeight: '100', mb: 2 }}>
+                                                Finders
+                                            </Typography>
 
 
-                                    <div id="subheading">
-                                        <Typography textAlign={'center'} sx={{ fontWeight: '100', mb: 2 }}>
-                                            We help farmers connect with each
-                                        </Typography>
-                                        <Typography textAlign={'center'} sx={{ fontWeight: '100', mb: 2 }}>
-                                            other to buy, sell, and host events!
-                                        </Typography>
+                                            <div id="subheading">
+                                                <Typography textAlign={'center'} sx={{ fontWeight: '100', mb: 2 }}>
+                                                    We help farmers connect with each
+                                                </Typography>
+                                                <Typography textAlign={'center'} sx={{ fontWeight: '100', mb: 2 }}>
+                                                    other to buy, sell, and host events!
+                                                </Typography>
+                                            </div>
+                                            <Link to={'/login'}>
+                                                <Button id="but" variant="contained" color="success" sx={{ pl: 5, pr: 5 }}>
+                                                    <Typography textAlign="center">Login</Typography>
+                                                </Button>
+                                            </Link>
+                                        </CardContent>
+                                    </Box>
+                                </div>
+                            </Card>
+
+
+                            <div id="secondLanding">
+                                <Card sx={{ display: 'flex' }}>
+                                    <CardContent>
+                                        <Timeline id="timeline">
+                                            <TimelineItem>
+                                                <TimelineSeparator>
+                                                    <TimelineDot />
+                                                    <TimelineConnector />
+                                                </TimelineSeparator>
+                                                <TimelineContent>Create your account and choose if you are a farmer or not </TimelineContent>
+                                            </TimelineItem>
+                                            <TimelineItem>
+                                                <TimelineSeparator>
+                                                    <TimelineDot />
+                                                    <TimelineConnector />
+                                                </TimelineSeparator>
+                                                <TimelineContent>Post items & buy items from other farmers in your area</TimelineContent>
+                                            </TimelineItem>
+                                            <TimelineItem>
+                                                <TimelineSeparator>
+                                                    <TimelineDot />
+                                                </TimelineSeparator>
+                                                <TimelineContent>Host or attend events from farms</TimelineContent>
+                                            </TimelineItem>
+                                        </Timeline>
+                                    </CardContent>
+                                    <div id="timelineimg">
+                                        <CardMedia
+                                            component="img"
+                                            sx={{ width: 350 }}
+                                            image={LandingImageTwo}
+                                            alt="Landing Img"
+                                        />
                                     </div>
-                                    <Link to={'/login'}>
-                                        <Button variant="contained" color="success" sx={{ pl: 5, pr: 5 }}>
-                                            <Typography textAlign="center">Login</Typography>
-                                        </Button>
-                                    </Link>
-                                </CardContent>
-                            </Box>
-                        </div>
-                    </Card>
-
-
-                    <div id="secondLanding">
-                        <Card sx={{ display: 'flex' }}>
-                            <CardContent>
-                                <Timeline id="timeline">
-                                    <TimelineItem>
-                                        <TimelineSeparator>
-                                            <TimelineDot />
-                                            <TimelineConnector />
-                                        </TimelineSeparator>
-                                        <TimelineContent>Create your account and choose if you are a farmer or not </TimelineContent>
-                                    </TimelineItem>
-                                    <TimelineItem>
-                                        <TimelineSeparator>
-                                            <TimelineDot />
-                                            <TimelineConnector />
-                                        </TimelineSeparator>
-                                        <TimelineContent>Post items & buy items from other farmers in your area</TimelineContent>
-                                    </TimelineItem>
-                                    <TimelineItem>
-                                        <TimelineSeparator>
-                                            <TimelineDot />
-                                        </TimelineSeparator>
-                                        <TimelineContent>Host or attend events from farms</TimelineContent>
-                                    </TimelineItem>
-                                </Timeline>
-                            </CardContent>
-                            <div id="timelineimg">
-                                <CardMedia
-                                    component="img"
-                                    sx={{ width: 350 }}
-                                    image={LandingImageTwo}
-                                    alt="Landing Img"
-                                />
+                                </Card>
                             </div>
-                        </Card>
-                    </div>
-                </div>
-            </ThemeProvider> }
+                        </div>
+                    </ThemeProvider>}
+
+                </Grid>
+
+            </Grid>
+
 
         </>
 
