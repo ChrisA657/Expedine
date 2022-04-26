@@ -12,11 +12,9 @@ const Search = ({ searchObject, setSearchObject, setFarms, justItem, header, ver
         { priceOption: 5, label: "$100+", minPrice: 100, maxPrice: 100000 },
     ]
     const filterOptions = [
-        { objectName: "isVegetable", label: "Vegetable" },
-        { objectName: "isLivestock", label: "Livestock" },
-        { objectName: "isEquipment", label: "Equipment" },
         { objectName: "isFruit", label: "Fruit" },
-        { objectName: "isBig", label: "Big" },
+        { objectName: "isLivestock", label: "Livestock" },
+        { objectName: "isMachinery", label: "Machinery" },
     ]
     const [searchParams, setSearchParams] = useState({
         priceOption: 0,

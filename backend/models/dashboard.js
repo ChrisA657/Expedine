@@ -60,7 +60,6 @@ const fetchTransactionWithProducts = async(transaction_id) => {
 module.exports = {
     fetchTransactions,
     fetchTransactionWithProducts,
-    // fetchMostCommonCustomers,
     fetchInterestedEvents,
     deleteInterestedEvent,
     deleteAllInterestedEvents
