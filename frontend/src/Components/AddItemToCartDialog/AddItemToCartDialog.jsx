@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Backdrop, Box, CircularProgress, Grid, Input, InputAdornment, Stack, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -10,11 +10,14 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Checkmark from '../../images/green-checkmark.png';
 import { Link, useNavigate } from 'react-router-dom';
+import { addItemToCart } from '../../api/carts';
+import { UserContext } from '../userContext';
 const AddItemToCartDialog = ({ open, setOpen, product_name, product_description, product_price, product_stock, product_image_url, product_id, farmId }) => {
     const [quantity, setQuantity] = useState(1);
     const [processing, setProcessing] = useState(false);
     const [completed, setCompleted] = useState(false);
     const navigate = useNavigate();
+    const userContext = useContext(UserContext);
     const timer = useRef();
     const timer2 = useRef();
     useEffect(() => {
@@ -34,10 +37,8 @@ const AddItemToCartDialog = ({ open, setOpen, product_name, product_description,
     const handleSubmit = () => {
         if(!quantity) return;
         setProcessing(true);
-        //addItemToFarm(farmId, itemDetails).then();
-        timer.current = setTimeout(() => {
-            setCompleted(true);
-        }, 2000)
+        addItemToCart({product_id, product_stock: quantity, user_id: userContext.userData.user_id}).then(setCompleted(true));
+        
 
 
     }

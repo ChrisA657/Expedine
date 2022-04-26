@@ -3,7 +3,7 @@
 import axios from "axios"
 import apiURL from "./APIURL"
 
-const apiEndpoint = apiURL + "carts"
+const apiEndpoint = apiURL + "cart"
 const apiConfig = {
     headers: {
         Authorization: "me"
@@ -12,12 +12,16 @@ const apiConfig = {
 }
 
 //expected return, list of items user has added to their cart
-const getCart = (user_id) => {
-    axios.get(`${apiEndpoint}/${user_id}`);
+export const getCart = (user_id) => {
+    return axios.get(`${apiEndpoint}/${user_id}`);
+}
+export const addItemToCart = (item) =>{
+    console.log(item);
+    return axios.post(`${apiEndpoint}/`, item);
 }
 
-const deleteItemFromCart = (user_id, itemId) => {
-    axios.delete(`${apiEndpoint}/${user_id}/${itemId}`)
+export const deleteItemFromCart = (user_id, itemId) => {
+    return axios.delete(`${apiEndpoint}/${user_id}/${itemId}`)
 }
 
 // create an order from the items in the carts

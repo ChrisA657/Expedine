@@ -11,15 +11,16 @@ import { Box } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import { getFarmById } from '../../api/farms';
 import { UserContext } from '../userContext';
+import { getCart } from '../../api/carts';
 
 export const Cart = () => {
     const [items, setItems] = useState([
-        { name: "Farm", description: "Large variant aksk alskd aklskdk alsk", image: "https://media.gq.com/photos/56e71c0b14cbe0637b261d7f/16:9/w_2560%2Cc_limit/horseinsuit2.jpg", price: 14.99, quantity: 4, farmId: 1, },
-        { name: "Pear", description: "Edible i hope", image: "https://images.albertsons-media.com/is/image/ABS/184120604?$ecom-pdp-desktop$&defaultImage=Not_Available", price: 14.99, quantity: 4, farmId: 1, },
-        { name: "Tractor", description: "Large variant", image: "https://images.wsj.net/im-461772?width=1280&size=1", price: 14.99, quantity: 4, farmId: 1, },
-        { name: "Horse", description: "Pretty fast", image: " ", price: 14.99, quantity: 2, farmId: 1, },
-        { name: "Shovel", description: "Large variant", image: "https://www.qcsupply.com/media/catalog/product/cache/5284d6cde28d5b60f464df18bb1a18f4/3/6/360354.jpg", price: 14.99, quantity: 4, farmId: 1, },
-        { name: "Banjo", description: "Large variant", image: "https://thumbs.static-thomann.de/thumb/padthumb600x600/pics/bdb/345289/16476856_800.jpg", price: 14.99, quantity: 4, farmId: 1, },
+        { product_name: "Farm", product_description: "Large variant aksk alskd aklskdk alsk", product_image_url: "https://media.gq.com/photos/56e71c0b14cbe0637b261d7f/16:9/w_2560%2Cc_limit/horseinsuit2.jpg", product_price: 14.99, product_stock: 4, farmId: 1, },
+        { product_name: "Pear", product_description: "Edible i hope", product_image_url: "https://images.albertsons-media.com/is/product_image_url/ABS/184120604?$ecom-pdp-desktop$&defaultImage=Not_Available", product_price: 14.99, product_stock: 4, farmId: 1, },
+        { product_name: "Tractor", product_description: "Large variant", product_image_url: "https://images.wsj.net/im-461772?width=1280&size=1", product_price: 14.99, product_stock: 4, farmId: 1, },
+        { product_name: "Horse", product_description: "Pretty fast", product_image_url: " ", product_price: 14.99, product_stock: 2, farmId: 1, },
+        { product_name: "Shovel", product_description: "Large variant", product_image_url: "https://www.qcsupply.com/media/catalog/product/cache/5284d6cde28d5b60f464df18bb1a18f4/3/6/360354.jpg", product_price: 14.99, product_stock: 4, farmId: 1, },
+        { product_name: "Banjo", product_description: "Large variant", product_image_url: "https://thumbs.static-thomann.de/thumb/padthumb600x600/pics/bdb/345289/16476856_800.jpg", product_price: 14.99, product_stock: 4, farmId: 1, },
     ])
     const [orders, setOrders] = useState(null);
     const [total, setTotal] = useState(0);
@@ -28,13 +29,15 @@ export const Cart = () => {
     const redirectToCheckout = () => {
         navigate("/checkout");
     }
-
+    useEffect(() => {
+        getCart(userContext.userData.user_id).then(res => setItems(res.data));
+    },[]);
     useEffect(() => {
         const orders = []
         let total = 0;
         items.forEach(itemToSort => {
             let added = false;
-            total += itemToSort.price * itemToSort.quantity;
+            total += itemToSort.product_price * itemToSort.product_stock;
             orders.forEach(order => {
                 if (order[0].farmId == itemToSort.farmId) {
                     added = true;
@@ -84,24 +87,24 @@ export const Cart = () => {
                                             order.map((item, index) => {
                                                 return <>
                                                     <ListItem alignItems='flex-start' key={index} sx={{ py: 1, px: 0, display: ["none", "flex"] }}>
-                                                        <ListItemText primary={<Typography variant='h6'>{item.name}</Typography>} secondary={<><div style={{ marginLeft: "6px" }}>{item.description}</div>
+                                                        <ListItemText primary={<Typography variant='h6'>{item.product_name}</Typography>} secondary={<><div style={{ marginLeft: "6px" }}>{item.product_description}</div>
                                                         <Stack sx={{ textAlign: "start", alignItems: "start", my:1.5 }}>
-                                                                <Typography >Price: ${item.price}</Typography>
-                                                                <Typography >Quantity: {item.quantity}</Typography>
-                                                                <Typography sx={{ fontWeight: "bold", }}>Total: ${item.price * item.quantity}</Typography>
+                                                                <Typography >Price: ${item.product_price}</Typography>
+                                                                <Typography >Quantity: {item.product_stock}</Typography>
+                                                                <Typography sx={{ fontWeight: "bold", }}>Total: ${item.product_price * item.product_stock}</Typography>
                                                             </Stack>
                                                             <Button variant='outlined' color='error' sx={{ mt: 1 }} onClick={() => deleteItem(item.itemId)}>Remove</Button></>} />
-                                                        <img src={item.image} style={{ width: '35%',maxHeight: "200px", maxWidth: "320px", }} />
+                                                        <img src={item.product_image_url} style={{ width: '35%',maxHeight: "200px", maxWidth: "320px", }} />
                                                     </ListItem>
                                                     <Container component="li" sx={{ display: ["flex", "none"], flexDirection: 'column' }}>
-                                                        <Typography sx={{ textAlign: "center" }}>{item.name}</Typography>
-                                                        <Typography variant='subtitle2' color={"text.secondary"} sx={{ textAlign: "center" }}>{item.description}</Typography>
-                                                        <img src={item.image} style={{ width: '100%', maxHeight: "200px", maxWidth: "320px", margin: "0 auto", display: "block" }} />
+                                                        <Typography sx={{ textAlign: "center" }}>{item.product_name}</Typography>
+                                                        <Typography variant='subtitle2' color={"text.secondary"} sx={{ textAlign: "center" }}>{item.product_description}</Typography>
+                                                        <img src={item.product_image_url} style={{ width: '100%', maxHeight: "200px", maxWidth: "320px", margin: "0 auto", display: "block" }} />
                                                         <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} sx={{ my: 2 }}>
                                                             <Stack sx={{ textAlign: "start", alignItems: "start" }}>
-                                                                <Typography sx={{ }}>Price: ${item.price}</Typography>
-                                                                <Typography sx={{  }}>Quantity: {item.quantity}</Typography>
-                                                                <Typography sx={{ fontWeight: "bold", }}>Total: ${item.price * item.quantity}</Typography>
+                                                                <Typography sx={{ }}>Price: ${item.product_price}</Typography>
+                                                                <Typography sx={{  }}>Quantity: {item.product_stock}</Typography>
+                                                                <Typography sx={{ fontWeight: "bold", }}>Total: ${item.product_price * item.product_stock}</Typography>
                                                             </Stack>
 
                                                             <Button variant='outlined' color='error' onClick={() => deleteItem(item.itemId)}>Remove</Button>
