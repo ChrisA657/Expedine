@@ -30,7 +30,14 @@ const Dashboard = () => {
             setfarmId(res.data[0]?.farmer_id);
         })
 
-        getOrders(userContext.userData.user_id).then(res=>console.log(res.data))
+        getOrders(2).then(res=> {
+            res.data.forEach(order=> {
+                console.log(order)
+                let items = order.result2;
+                let info = order.result1;
+            })
+            
+        })
     }
     },[])
 

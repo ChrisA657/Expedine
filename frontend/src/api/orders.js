@@ -13,7 +13,7 @@ export const createNewOrder = (order) => {
     }
     //get the orders associated with a user, used for dashboard
 export const getOrders = (user_id) => {
-    return axios.get(`${apiURL}dashboard/transactions/${user_id}`, apiConfig);
+    return axios.get(`${apiURL}dashboard/transactions/customer/${user_id}`, apiConfig);
 }
 
 // should check authorization to make sure farmer id is the same on the order
