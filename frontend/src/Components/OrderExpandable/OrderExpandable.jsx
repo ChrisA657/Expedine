@@ -12,7 +12,7 @@ const OrderExpandable = ({ transaction_id, buyerName, farmName, purchasedDate, i
     const buildItemString = () => {
         let items = [];
         itemsPurchased.forEach(item => {
-            items.push(item.product_name + " (" + item.product_stock + ")");
+            items.push(item.product_name + " (" + item.quantity + ")");
         });
         return items.join(', ')
     }
@@ -42,8 +42,8 @@ const OrderExpandable = ({ transaction_id, buyerName, farmName, purchasedDate, i
                                         <ListItemText primary={<Typography variant='h6'>{item.product_name}</Typography>} secondary={<><div style={{ marginLeft: "6px" }}>{item.description}</div>
                                             <Stack sx={{ textAlign: "start", alignItems: "start", my: 1.5 }}>
                                                 <Typography >Price: ${item.product_price}</Typography>
-                                                <Typography >Quantity: {item.product_stock}</Typography>
-                                                <Typography sx={{ fontWeight: "bold", }}>Total: ${item.product_price * item.product_stock}</Typography>
+                                                <Typography >Quantity: {item.quantity}</Typography>
+                                                <Typography sx={{ fontWeight: "bold", }}>Total: ${item.quantity * item.quantity}</Typography>
                                             </Stack>
                                         </>} />
                                         <img src={item.product_image_url} style={{ width: '35%', maxHeight: "200px", maxWidth: "320px", }} />
@@ -56,8 +56,8 @@ const OrderExpandable = ({ transaction_id, buyerName, farmName, purchasedDate, i
                                         <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} sx={{ my: 2 }}>
                                             <Stack sx={{ textAlign: "start", alignItems: "start" }}>
                                                 <Typography sx={{}}>Price: ${item.product_price}</Typography>
-                                                <Typography sx={{}}>Quantity: {item.product_stock}</Typography>
-                                                <Typography sx={{ fontWeight: "bold", }}>Total: ${item.product_price * item.product_stock}</Typography>
+                                                <Typography sx={{}}>Quantity: {item.quantity}</Typography>
+                                                <Typography sx={{ fontWeight: "bold", }}>Total: ${item.product_price * item.quantity}</Typography>
                                             </Stack>
                                         </Box>
                                         <Divider variant='middle'></Divider>
