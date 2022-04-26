@@ -14,7 +14,7 @@ export const getEventsByuser_id = (user_id) => {
 
 export const registerForEvent = (customer_id, event_id) => {
     console.log({ customer_id, event_id })
-    return axios.post(apiEndpoint, { customer_id, event_id })
+    return axios.post(apiEndpoint, { user_id: customer_id, event_id })
 }
 
 export const unRegisterForEvent = (customer_id, event_id) => {
