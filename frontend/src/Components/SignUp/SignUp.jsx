@@ -18,7 +18,7 @@ export const SignUp = () => {
     
     const handleSubmit = () =>{
         console.log(isFarmer);
-        register({first_name, last_name, email, password, isFarmer}).then((res)=>{
+        register({first_name, last_name, email, password, isFarmer: isFarmer ? 1:0}).then((res)=>{
             userContext.setUserData(res.data);
             navigate("/dashboard");
         })
