@@ -7,9 +7,9 @@ import DialogActions from '@mui/material/DialogActions';
 
 import DialogTitle from '@mui/material/DialogTitle';
 import Checkmark from '../../images/green-checkmark.png';
-import { registerForEvent } from '../../api/userEvents';
+import { registerForEvent, unRegisterForEvent } from '../../api/userEvents';
 import { UserContext } from '../userContext';
-
+import { EventContext } from '../EventContext';
 
 const RegisterToEventDialog = ({ open, setOpen, event_id, farmId, farmName, unregistering}) => {
 
@@ -21,25 +21,27 @@ const RegisterToEventDialog = ({ open, setOpen, event_id, farmId, farmName, unre
     const [completionText, setCompletionText] = useState('')
     
     const userContext = useContext(UserContext);
+    const eventContext = useContext(EventContext);
     const handleChange = (delta) => {
         setEventDetails({ ...eventDetails, ...delta });
     }
     const handleSubmit = () => {
         setProcessing(true);
         if(unregistering){
-            //TODO remove event from user events table
-            // // .then(()=>{\
-                   // setProcessing(false);
-            //     setDialogComplete(true);
-            //     setCompletionText("Successfully unregistered");
-            // })
+            unRegisterForEvent(userContext.userData.user_id, event_id).then((res)=>{
+                setProcessing(false);
+                setDialogComplete(true);
+                setCompletionText("Successfully Unregistered");
+                eventContext.refreshEvents();
+            })
         } else {
             
             
-            registerForEvent(userContext.userData.user_id, event_id).then(()=>{
+            registerForEvent(userContext.userData.user_id, event_id).then((res)=>{
                 setProcessing(false);
                 setDialogComplete(true);
                 setCompletionText("Successfully registered");
+                eventContext.refreshEvents();
             })
         }
 

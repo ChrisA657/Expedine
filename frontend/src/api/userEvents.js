@@ -18,5 +18,5 @@ export const registerForEvent = (customer_id, event_id) => {
 }
 
 export const unRegisterForEvent = (customer_id, event_id) => {
-    return axios.delete(apiEndpoint, { customer_id, event_id })
+    return axios.delete(apiEndpoint, { user_id: customer_id, event_id })
 }

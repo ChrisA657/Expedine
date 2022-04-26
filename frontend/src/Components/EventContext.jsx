@@ -11,7 +11,11 @@ export const EventProvider = ({children}) =>{
     const userContext = useContext(UserContext);
     const [events, setEvents] = useState(null);
 
-    const context = useMemo(() => ({events, setEvents}), [events]);
+    const refreshEvents = () =>{
+        getEventsByuser_id(userContext?.userData?.user_id).then(res => setEvents(res.data));
+    }
+
+    const context = useMemo(() => ({events, setEvents, refreshEvents}), [events]);
     useEffect(()=> {
         //TODO get user's events subscribed to
         console.log(userContext?.userData?.user_id)
