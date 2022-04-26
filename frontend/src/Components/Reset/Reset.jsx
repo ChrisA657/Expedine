@@ -12,18 +12,19 @@ const Reset = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        getUserID(User).then(x => setRUsername(x[0].user_id));
-    }, [ User, RUser ]);
+    }, [ ]);
 
     const handleSubmit = () => {
         if(Password != cPassword){
             alert("Passwords do not match");
         }
-        console.log(RUser);
-        resetPassword(RUser, Password).then(()=>{
+        getUserID(User).then(x => {setRUsername(x[0].user_id); console.log(RUser);})
+        .then(resetPassword(RUser, Password)).then(() => {
             navigate("/login");
-        })
+        }
+        )
     }
+
 
     return (
         <form>
