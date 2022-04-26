@@ -31,11 +31,14 @@ export const updateFarmByID = (farmInfo, id) => axios.put(`${apiEndpoint}/${id}`
 
 // create a new farm
 export const createFarm = (farm) => {
-    axios.post(`${apiEndpoint}/`, farm, apiConfig)
+    return axios.post(`${apiEndpoint}/`, farm, apiConfig)
 
 }
 export const deleteFarmByID = (farm,id) => {
-    axios.delete(`${apiEndpoint}/${id}`, apiConfig)
+    return axios.delete(`${apiEndpoint}/${id}`, apiConfig)
     
 }
 
+export const getFarmOwnerID = (id) =>{
+    return axios.get(`${apiEndpoint}/farmByOwner/${id}`, apiConfig)
+}

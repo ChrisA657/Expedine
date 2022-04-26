@@ -1,5 +1,5 @@
-import { Divider, Grid, Typography } from '@mui/material';
-import React, { useContext, useState } from 'react';
+import { Button, Divider, Grid, Typography } from '@mui/material';
+import React, { useContext, useEffect, useState } from 'react';
 import FarmImg from '../../images/farm.jpg';
 import { order } from '../../models/order';
 import { item } from '../../models/item';
@@ -8,7 +8,13 @@ import OrderExpandable from '../OrderExpandable/OrderExpandable';
 import { event } from '../../models/event';
 import EventCard from '../eventCard/EventCard';
 import { EventContext } from '../EventContext';
+import { UserContext } from '../userContext';
+import { getFarmOwnerID } from '../../api/farms';
+import EditFarmDialog from '../EditFarmDialog/EditFarmDialog';
 const Dashboard = () => {
+    const userContext = useContext(UserContext);
+    const [farmId, setfarmId] = useState(null);
+    const [showCreateFarm, setShowCreateFarm] = useState(false);
     const [orders, setOrders] = useState([
         new order(1, 1, "Zach", "Greenville Farms", 2, new Date(), 242, [new item("Horse", "Big horse", "https://media.gq.com/photos/56e71c0b14cbe0637b261d7f/16:9/w_2560%2Cc_limit/horseinsuit2.jpg", 20, 1, 2), new item("Broom", "Dust destroyer", "https://images.thdstatic.com/productImages/6aa74e47-b7ba-48c8-bea8-258298b0ee8e/svn/hdx-corn-brooms-750-64_600.jpg", 20, 2, 2)],"Dan", "The man","323 really real street","Dallas","Texas",75115, false),
         new order(1, 1, "Texas", "Greenville Farms", 2, new Date(), 242, [new item("Horse", "Big horse", "https://media.gq.com/photos/56e71c0b14cbe0637b261d7f/16:9/w_2560%2Cc_limit/horseinsuit2.jpg", 20, 1, 2)], true),
@@ -16,9 +22,23 @@ const Dashboard = () => {
     ])
 
     const eventContext = useContext(EventContext);
+
+    useEffect(()=>{
+        getFarmOwnerID(userContext.userData.user_id).then((res)=>{
+            setfarmId(res.data.farmer_id);
+        })
+    },[])
+
+    const openCreateFarm = () =>{
+        setShowCreateFarm(true);
+    }
     return (
+        
         <div className='dashboard'>
-            <Typography mb={2}>Orders</Typography>
+            {
+                userContext.userData.isFarmer && !farmId && <><Button onClick={openCreateFarm}> Create your farm</Button></>
+            }
+            <Typography variant='h4' mb={2}>Orders</Typography>
             <Divider />
             <div className="dashboard-orders">
                 
@@ -30,7 +50,7 @@ const Dashboard = () => {
                 }
             </div>
             <Divider />
-            <Typography mt={4} mb={4}>My RSVP'D Events</Typography>
+            <Typography variant='h4' mt={4} mb={4}>My RSVP'D Events</Typography>
             <Grid container spacing={3} sx={{width:["100%"]}}>
                 {
                     eventContext.events && eventContext.events.map((event)=>{
@@ -40,6 +60,14 @@ const Dashboard = () => {
                     })
                 }
             </Grid>
+
+            {
+                showCreateFarm && <EditFarmDialog open={showCreateFarm}
+                    setOpen={setShowCreateFarm}
+                    owner_id={userContext.userData.user_id}
+                    creating
+                    />
+            }
         </div>
     );
 };

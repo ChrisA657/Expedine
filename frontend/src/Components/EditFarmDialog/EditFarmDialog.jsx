@@ -9,15 +9,17 @@ import DialogContent from '@mui/material/DialogContent';
 
 import DialogTitle from '@mui/material/DialogTitle';
 import Checkmark from '../../images/green-checkmark.png';
-import {updateFarmByID} from '../../api/farms'
-const EditFarmDialog = ({ open, setOpen, farm_name, farm_description, farm_image_url, date_founded, farmId }) => {
+import { createFarm, updateFarmByID } from '../../api/farms'
+import { useNavigate } from 'react-router-dom';
+const EditFarmDialog = ({ open, setOpen, farm_name, farm_description, farm_image_url, date_founded, farmId, owner_id, creating }) => {
     console.log(farmId);
     const [farmDetails, setFarmDetails] = useState({});
     const [processing, setProcessing] = useState(false);
     const [dialogComplete, setDialogComplete] = useState(false);
+    const navigate = useNavigate();
     useEffect(() => {
         setFarmDetails({
-            farm_name, farm_description, farm_image_url, date_founded
+            farm_name, farm_description, farm_image_url, date_founded,
         })
     }, [])
 
@@ -29,11 +31,18 @@ const EditFarmDialog = ({ open, setOpen, farm_name, farm_description, farm_image
     };
     const handleSubmit = () => {
         setProcessing(true);
-        updateFarmByID(farmDetails,farmId).then()
-        {
-            setProcessing(false);
-            setDialogComplete(true);
+        if (creating) {
+            createFarm({...farmDetails, owner_id}).then(res=>{
+                navigate('/farms/' + res.data.farmer_id);
+            });
+        } else {
+            updateFarmByID(farmDetails, farmId).then()
+            {
+                setProcessing(false);
+                setDialogComplete(true);
+            }
         }
+
     }
     if (processing) {
         return <Backdrop
@@ -57,7 +66,7 @@ const EditFarmDialog = ({ open, setOpen, farm_name, farm_description, farm_image
                 <>
                     <DialogTitle sx={{ textAlign: "center", fontWeight: "Bold" }}>Edit the details of your farm</DialogTitle>
                     <DialogContent>
-                        <img src={farmDetails.farm_image_url} style={{minWidth:'200px', maxWidth:'60%', display:'block', margin:'0 auto'}}/>
+                        <img src={farmDetails.farm_image_url} style={{ minWidth: '200px', maxWidth: '60%', display: 'block', margin: '0 auto' }} />
                         <TextField
                             sx={{ margin: "1rem 0" }}
                             required

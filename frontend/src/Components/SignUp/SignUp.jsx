@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { register } from "../../api/account";
 import '../Login/Login.css';
@@ -17,11 +17,15 @@ export const SignUp = () => {
     const userContext = useContext(UserContext);
     
     const handleSubmit = () =>{
-        register({first_name, last_name, email, rUser, password, isFarmer}).then((res)=>{
+        console.log(isFarmer);
+        register({first_name, last_name, email, password, isFarmer}).then((res)=>{
             userContext.setUserData(res.data);
             navigate("/dashboard");
         })
     }
+    useEffect(()=>{
+        console.log(isFarmer)
+    },[isFarmer])
     return <form>
         <div className="login-container">
             <div className="text-center fs-3 fw-bold mb-4">Sign up</div>
@@ -86,7 +90,11 @@ export const SignUp = () => {
             </div>
             <div className="row flex align-items-end mt-4">
                 <div className="col">
-                    <input className="form-check-input" type="checkbox" value={isFarmer} id="isFarmer" />
+                    <input className="form-check-input" 
+                            type="checkbox" 
+                            value={isFarmer} 
+                            onChange={e => setIsFarmer(e.target.checked)}
+                            id="isFarmer" />
                     <label className="form-check-label ms-2" htmlFor="isFarmer">
                         Sign up as farmer
                     </label>
@@ -94,7 +102,7 @@ export const SignUp = () => {
             </div>
             <button type="button" className="btn btn-primary mb-4 mt-4" onClick={handleSubmit}>Sign up</button>
             <div className="text-center">
-                <span>Already have an account? </span><Link to="/login">Login</Link>
+                <span>Already have an account?</span><Link to="/login">Login</Link>
             </div>
 
         </div>
