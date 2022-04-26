@@ -12,7 +12,7 @@ const apiConfig = {
 
 
 export const login = (userdata) => new Promise((resolve, reject)=>{
-            axios.post(`${apiEndpoint}/login`, userdata)
+            axios.post(`${apiURL}login`, userdata)
             .then(res => {
                 resolve(res);
                 console.log("sucess")
@@ -22,7 +22,7 @@ export const login = (userdata) => new Promise((resolve, reject)=>{
     
 
 export const register = (userdata) => new Promise((resolve,reject) =>{
-            axios.post(apiURL + "register", userdata).then(res => {
+            axios.post(`${apiEndpoint}`, userdata).then(res => {
                 console.log(res);
                 resolve(res);
             }).catch(err => {

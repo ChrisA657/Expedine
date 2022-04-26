@@ -3,7 +3,7 @@
 import axios from "axios"
 import apiURL from "./APIURL"
 
-const apiEndpoint = apiURL + "carts"
+const apiEndpoint = apiURL + "cart"
 const apiConfig = {
     headers: {
         Authorization: "me"
@@ -12,17 +12,22 @@ const apiConfig = {
 }
 
 //expected return, list of items user has added to their cart
-const getCart = (userId) => {
-    axios.get(`${apiEndpoint}/${userId}`);
+export const getCart = (user_id) => {
+    return axios.get(`${apiEndpoint}/${user_id}`);
+}
+export const addItemToCart = (item) =>{
+    console.log(item);
+    return axios.post(`${apiEndpoint}/`, item);
 }
 
-const deleteItemFromCart = (userId, itemId) =>{
-    axios.delete(`${apiEndpoint}/${userId}/${itemId}`)
+export const deleteItemFromCart = (user_id, product_id) => {
+    console.log(user_id + " + " + product_id);
+    return axios.delete(`${apiEndpoint}/clear/${user_id}/${product_id}`, {user_id});
 }
 
 // create an order from the items in the carts
 // should remove the purchased # from the stock total of the item being bought
 // should create seperate orders for items belonging to different farms
-const checkout = (userId) =>{
-    axios.post(`${apiEndpoint}/${userId}`);
+const checkout = (user_id) => {
+    axios.post(`${apiEndpoint}/${user_id}`);
 }

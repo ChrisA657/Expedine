@@ -1,45 +1,52 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { register } from "../../api/account";
 import '../Login/Login.css';
+import { UserContext } from "../userContext";
 export const SignUp = () => {
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
+    const [first_name, setfirst_name] = useState("");
+    const [last_name, setlast_name] = useState("");
     const [email, setEmail] = useState("");
     const [rUser, setRUsername] = useState("");
-    const [rPassword, setRPassword] = useState("");
+    const [password, setpassword] = useState("");
     const [cPassword, setCPassword] = useState("");
     const [isFarmer, setIsFarmer] = useState(false);
 
 
     const navigate = useNavigate();
+    const userContext = useContext(UserContext);
     
     const handleSubmit = () =>{
-        register({firstName, lastName, email, rUser, rPassword, isFarmer}).then(()=>{
+        console.log(isFarmer);
+        register({first_name, last_name, email, password, isFarmer: isFarmer ? 1:0}).then((res)=>{
+            userContext.setUserData(res.data);
             navigate("/dashboard");
         })
     }
+    useEffect(()=>{
+        console.log(isFarmer)
+    },[isFarmer])
     return <form>
         <div className="login-container">
             <div className="text-center fs-3 fw-bold mb-4">Sign up</div>
             <div className="row mb-4 align-items-end">
                 <div className="col">
-                    <label htmlFor="firstName">First Name</label>
+                    <label htmlFor="first_name">First Name</label>
                     <input type="text"
                         className="form-control"
-                        value={firstName}
-                        name="firstName"
-                        id="firstName"
-                        onChange={e => setFirstName(e.target.value)} />
+                        value={first_name}
+                        name="first_name"
+                        id="first_name"
+                        onChange={e => setfirst_name(e.target.value)} />
                 </div>
                 <div className="col">
-                    <label htmlFor="lastName">Last Name</label>
-                    <input type="lastName"
+                    <label htmlFor="last_name">Last Name</label>
+                    <input type="last_name"
                         className="form-control"
-                        value={lastName}
-                        name="lastName"
-                        id="lastName"
-                        onChange={e => setLastName(e.target.value)} />
+                        value={last_name}
+                        name="last_name"
+                        id="last_name"
+                        onChange={e => setlast_name(e.target.value)} />
                 </div>
             </div>
             <div className="row mb-4 align-items-end">
@@ -64,13 +71,13 @@ export const SignUp = () => {
             </div>
             <div className="row align-items-end">
                 <div className="col">
-                    <label htmlFor="rPassword">Password</label>
+                    <label htmlFor="password">Password</label>
                     <input type="password"
                         className="form-control"
-                        value={rPassword}
-                        name="rPassword"
-                        id="rPassword"
-                        onChange={e => setRPassword(e.target.value)} />
+                        value={password}
+                        name="password"
+                        id="password"
+                        onChange={e => setpassword(e.target.value)} />
                 </div>
                 <div className="col">
                     <label htmlFor="cPassword">Confirm Password</label>
@@ -83,7 +90,11 @@ export const SignUp = () => {
             </div>
             <div className="row flex align-items-end mt-4">
                 <div className="col">
-                    <input className="form-check-input" type="checkbox" value={isFarmer} id="isFarmer" />
+                    <input className="form-check-input" 
+                            type="checkbox" 
+                            value={isFarmer} 
+                            onChange={e => setIsFarmer(e.target.checked)}
+                            id="isFarmer" />
                     <label className="form-check-label ms-2" htmlFor="isFarmer">
                         Sign up as farmer
                     </label>
@@ -91,7 +102,7 @@ export const SignUp = () => {
             </div>
             <button type="button" className="btn btn-primary mb-4 mt-4" onClick={handleSubmit}>Sign up</button>
             <div className="text-center">
-                <span>Already have an account? </span><Link to="/login">Login</Link>
+                <span>Already have an account?</span><Link to="/login">Login</Link>
             </div>
 
         </div>

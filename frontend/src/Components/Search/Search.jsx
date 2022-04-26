@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Checkbox, Container, Grid, MenuItem, Stack, TextField, ToggleButton, Typography } from '@mui/material';
 import { item } from '../../models/item';
+import { getFarmById, searchFarms } from '../../api/farms';
 const Search = ({ searchObject, setSearchObject, setFarms, justItem, header, verticalFilters, hideSearch }) => {
     const priceSearchOptions = [
         { priceOption: 0, label: "Any", minPrice: 0, maxPrice: 100000 },
@@ -59,31 +60,39 @@ const Search = ({ searchObject, setSearchObject, setFarms, justItem, header, ver
         });
     }
     const search = () => {
+        searchFarms(searchObject).then(res => {
+            console.log(res.data);
+            let uniqueFarmIds = [[]];
+            res.data.forEach((x) => uniqueFarmIds[x.farmer_id] ? uniqueFarmIds[x.farmer_id].push(x) : uniqueFarmIds[x.farmer_id] = [x] ) ;
+            // uniqueFarmIds = uniqueFarmIds.filter((v, i, a) => a.indexOf(v) === i);
+            console.log(uniqueFarmIds);
+            uniqueFarmIds.forEach((x) =>{
+                console.log(x);
+            })
+            setFarms([]);
+
+            for(let i = 1; i<uniqueFarmIds.length; i++) {
+                if(uniqueFarmIds[i] != null && uniqueFarmIds[i].length!=0) {
+                    getFarmById(i).then((res) => {
+                        if(res.data.farmInfo.length !=0){
+                            setFarms(farms => [
+                            ...farms, 
+                                {
+                                    farmId: res.data.farmInfo[0].farmer_id,
+                                    farmName: res.data.farmInfo[0].farm_name,
+                                    farmDescription: res.data.farmInfo[0].farm_description,
+                                    farmImage: res.data.farmInfo[0].farm_image_url,
+                                    items: uniqueFarmIds[i],
+                                    events: res.data.events
+                                }
+                            ])
+                        }
+                    })
+                }
+            }
+        })
         //setFarms(getFarms(searchObject));
-        setFarms([{
-            farmId: 1,
-            farmName: "Outback steak house",
-            farmImage: "google.com/favicon",
-            farmDescription: "great farm with great produce",
-            items: [new item("bananssssa", "i am banana", "https://cdn1.sph.harvard.edu/wp-content/uploads/sites/30/2018/08/bananas-1354785_1920.jpg", 20, 2, 1),
-            ]
-        },
-        {
-            farmId: 1,
-            farmName: "Outback steak house",
-            farmImage: "google.com/favicon",
-            farmDescription: "great farm with great produce",
-            items: [new item("bananssssa", "i am banana", "https://cdn1.sph.harvard.edu/wp-content/uploads/sites/30/2018/08/bananas-1354785_1920.jpg", 20, 2, 1),
-            ]
-        },
-        {
-            farmId: 1,
-            farmName: "Outback steak house",
-            farmImage: "google.com/favicon",
-            farmDescription: "great farm with great produce",
-            items: [new item("bananssssa", "i am banana", "https://cdn1.sph.harvard.edu/wp-content/uploads/sites/30/2018/08/bananas-1354785_1920.jpg", 20, 2, 1),
-            ]
-        }]);
+        
     };
     window.addEventListener('resize', () => {
         setWindowSize(window.innerWidth);

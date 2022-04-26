@@ -5,29 +5,29 @@ import { getEventById } from '../../api/events';
 import './EventPage.css';
 const EventPage = () => {
     const [event, setEvent] = useState({
-        title:"Go kart racing",
+        event_time:"Go kart racing",
         time: "2:00 p.m.",
         date: "March 7",
-        description: "We be out here for realLorem ipsum dolor sit amio iusto. Atque, explicabo adipisci. Dolorem, libero",
-        image:"https://i.cbc.ca/1.6165805.1630877196!/fileImage/httpImage/lawn-tractor-races.jpg",
+        event_description: "We be out here for realLorem ipsum dolor sit amio iusto. Atque, explicabo adipisci. Dolorem, libero",
+        event_image_url:"https://i.cbc.ca/1.6165805.1630877196!/fileImage/httpImage/lawn-tractor-races.jpg",
         farmName:"Yellow Bridge Farm",
         usersGoing:["billy boy","Bobby Billy","Old yeller", "Tractor drifter 32"]
     });
     const params = useParams();
 
     useEffect(()=>{
-        //setEvent(getEventById(params.id));
+        getEventById(params.id).then(res=>setEvent(res.data[0]));
         console.log(params.id);
     },[])
     return (
         <div id='event-page'>
-            <table>
+            <table style={{width:'100%'}}>
                 <tr>
                     <td>
                         <div className="details">
                             <div className="intro">
-                                <h1 className="eventTitle display-1">{event.title}</h1>
-                                <h3>{event.description}</h3>
+                                <h1 className="eventTitle display-1">{event.event_name}</h1>
+                                <h3>{event.event_description}</h3>
                             </div>
                             <div className="eventDetails">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-geo-alt-fill" viewBox="0 0 16 16">
@@ -47,8 +47,8 @@ const EventPage = () => {
                             </div>
                         </div>
                     </td>
-                    <td>
-                        <img src={event.image} className="eventImage"/>
+                    <td style={{width:'65%'}}>
+                        <img src={event.event_image_url} className="eventImage"/>
                     </td>
                 </tr>
             </table>

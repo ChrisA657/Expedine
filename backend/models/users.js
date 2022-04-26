@@ -4,7 +4,8 @@ const USER_TABLE = 'users';
 //create new user account
 const createNewUser = async (first_name, last_name, email, password, isFarmer) => {
     //create farmer
-    if(isFarmer==="1"){
+    if(isFarmer===1){
+        console.log('here');
         //add farmer to table
         const query = knex('users').insert({ first_name, last_name, email, password, isFarmer: 1 });
         console.log('Raw query for createFarmer:', query.toString());
@@ -13,7 +14,7 @@ const createNewUser = async (first_name, last_name, email, password, isFarmer) =
         return users[0];
     }
     //create customer
-    else if(isFarmer==="0"){
+    else if(isFarmer===0){
         //add customer to table
         const query = knex('users').insert({ first_name, last_name, email, password, isFarmer: 0 });
         console.log('Raw query for createCustomer:', query.toString());

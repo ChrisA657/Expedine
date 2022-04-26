@@ -9,15 +9,17 @@ import DialogContent from '@mui/material/DialogContent';
 
 import DialogTitle from '@mui/material/DialogTitle';
 import Checkmark from '../../images/green-checkmark.png';
-
-const EditFarmDialog = ({ open, setOpen, farmName, farmDescription, farmImage, dateFounded, farmId }) => {
-
+import { createFarm, updateFarmByID } from '../../api/farms'
+import { useNavigate } from 'react-router-dom';
+const EditFarmDialog = ({ open, setOpen, farm_name, farm_description, farm_image_url, date_founded, farmId, owner_id, creating }) => {
+    console.log(farmId);
     const [farmDetails, setFarmDetails] = useState({});
     const [processing, setProcessing] = useState(false);
     const [dialogComplete, setDialogComplete] = useState(false);
+    const navigate = useNavigate();
     useEffect(() => {
         setFarmDetails({
-            farmName, farmDescription, farmImage, dateFounded
+            farm_name, farm_description, farm_image_url, date_founded,
         })
     }, [])
 
@@ -29,11 +31,18 @@ const EditFarmDialog = ({ open, setOpen, farmName, farmDescription, farmImage, d
     };
     const handleSubmit = () => {
         setProcessing(true);
-        //editFarmById(farmId).then()
-        setTimeout(() => {
-            setProcessing(false);
-            setDialogComplete(true);
-        }, 2000)
+        if (creating) {
+            createFarm({...farmDetails, owner_id}).then(res=>{
+                navigate('/farms/' + res.data);
+            });
+        } else {
+            updateFarmByID(farmDetails, farmId).then()
+            {
+                setProcessing(false);
+                setDialogComplete(true);
+            }
+        }
+
     }
     if (processing) {
         return <Backdrop
@@ -55,55 +64,55 @@ const EditFarmDialog = ({ open, setOpen, farmName, farmDescription, farmImage, d
         <div>
             <Dialog open={open} onClose={handleClose}>
                 <>
-                    <DialogTitle sx={{ textAlign: "center", fontWeight: "Bold" }}>Edit the details of your farm</DialogTitle>
+                    <DialogTitle sx={{ textAlign: "center", fontWeight: "Bold" }}>{creating ? 'Provide details of your farm' : 'Edit the details of your farm'}</DialogTitle>
                     <DialogContent>
-                        <img src={farmDetails.farmImage} style={{minWidth:'200px', maxWidth:'60%', display:'block', margin:'0 auto'}}/>
+                        <img src={farmDetails.farm_image_url} style={{ minWidth: '200px', maxWidth: '60%', display: 'block', margin: '0 auto' }} />
                         <TextField
                             sx={{ margin: "1rem 0" }}
                             required
-                            id="farmName"
+                            id="farm_name"
                             label="Farm Name"
 
                             fullWidth
                             rows={4}
-                            value={farmDetails.farmName}
-                            onChange={e => handleChange({ farmName: e.target.value })}
+                            value={farmDetails.farm_name}
+                            onChange={e => handleChange({ farm_name: e.target.value })}
 
                         />
                         <TextField
 
                             required
-                            id="farmImage"
+                            id="farm_image_url"
                             label="Image"
                             sx={{ marginBottom: "1rem" }}
                             fullWidth
 
-                            value={farmDetails.farmImage}
-                            onChange={e => handleChange({ farmImage: e.target.value })}
+                            value={farmDetails.farm_image_url}
+                            onChange={e => handleChange({ farm_image_url: e.target.value })}
 
                         />
                         <TextField
                             sx={{ marginBottom: "1rem" }}
                             required
-                            id="farmDescription"
+                            id="farm_description"
                             label="Description"
                             multiline
                             fullWidth
                             rows={4}
-                            value={farmDetails.farmDescription}
-                            onChange={e => handleChange({ farmDescription: e.target.value })}
+                            value={farmDetails.farm_description}
+                            onChange={e => handleChange({ farm_description: e.target.value })}
 
                         />
                         <TextField
                             sx={{ margin: ".1rem 0" }}
                             required
-                            id="dateFounded"
+                            id="date_founded"
                             label="Year established"
 
                             fullWidth
                             rows={4}
-                            value={farmDetails.dateFounded}
-                            onChange={e => handleChange({ dateFounded: e.target.value })}
+                            value={farmDetails.date_founded}
+                            onChange={e => handleChange({ date_founded: e.target.value })}
 
                         />
                     </DialogContent>

@@ -6,7 +6,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
 import { Backdrop, Button, Checkbox, CircularProgress, Container, Divider, FormControlLabel, Paper, Stack, TextField } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import { Box } from '@mui/system';
+import { Box } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import { getFarmById } from '../../api/farms';
 import { UserContext } from '../userContext';
@@ -15,19 +15,22 @@ import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { getCart } from '../../api/carts';
+import { createNewOrder } from '../../api/orders';
 export const Checkout = () => {
     const steps = ['Shipping ', 'Payment', 'Review'];
 
     const [items, setItems] = useState([
-        { name: "Farm", description: "Large variant aksk alskd aklskdk alsk", image: " ", price: 14.99, quantity: 4, farmId: 1, },
-        { name: "Pear", description: "Edible i hope", image: " ", price: 14.99, quantity: 4, farmId: 2, },
-        { name: "Tractor", description: "Large variant", image: " ", price: 14.99, quantity: 4, farmId: 1, },
-        { name: "Horse", description: "Pretty fast", image: " ", price: 14.99, quantity: 2, farmId: 1, },
-        { name: "Shovel", description: "Large variant", image: " ", price: 14.99, quantity: 4, farmId: 1, },
-        { name: "Banjo", description: "Large variant", image: " ", price: 14.99, quantity: 4, farmId: 1, },
+        { product_name: "Farm", product_description: "Large variant aksk alskd aklskdk alsk", product_image_url: " ", product_price: 14.99, product_stock: 4, farmer_id: 1, },
+        { product_name: "Pear", product_description: "Edible i hope", product_image_url: " ", product_price: 14.99, product_stock: 4, farmer_id: 2, },
+        { product_name: "Tractor", product_description: "Large variant", product_image_url: " ", product_price: 14.99, product_stock: 4, farmer_id: 1, },
+        { product_name: "Horse", product_description: "Pretty fast", product_image_url: " ", product_price: 14.99, product_stock: 2, farmer_id: 1, },
+        { product_name: "Shovel", product_description: "Large variant", product_image_url: " ", product_price: 14.99, product_stock: 4, farmer_id: 1, },
+        { product_name: "Banjo", product_description: "Large variant", product_image_url: " ", product_price: 14.99, product_stock: 4, farmer_id: 1, },
     ])
     const [orders, setOrders] = useState(null);
     const [total, setTotal] = useState(0);
+    const [orderNumbers, setOrderNumbers] = useState('');
 
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -54,20 +57,31 @@ export const Checkout = () => {
     };
 
     const handleSubmit = () => {
-        handleNext();
-        //createNewOrder({cartId,firstName,lastName,address,city,state,zip,cardName,cardNumber,cardExprDate}).then(()=>handleNext())
-        setTimeout(()=>handleNext(),1000);
+        console.log(orders)
+        
+            createNewOrder({customer_id: userContext.userData.user_id, farmer_id: orders[0].farmer_id ,firstName,lastName,address,city,state,zip,cardName,cardNumber,cardExprDate}).
+            then((res)=> {
+                setOrderNumbers(res.data.result1[0].transaction_id)
+                setActiveStep(4);
+            })
        
-    }
+        
+        handleNext();
+        
+        
 
+    }
+    useEffect(() => {
+        getCart(userContext.userData.user_id).then(res => setItems(res.data));
+    }, []);
     useEffect(() => {
         const orders = []
         let total = 0;
         items.forEach(itemToSort => {
             let added = false;
-            total += itemToSort.price * itemToSort.quantity;
+            total += itemToSort.product_price * itemToSort.product_stock;
             orders.forEach(order => {
-                if (order[0].farmId == itemToSort.farmId) {
+                if (order[0].farmer_id == itemToSort.farmer_id) {
                     added = true;
                     order.push(itemToSort);
                 }
@@ -94,12 +108,12 @@ export const Checkout = () => {
                     <TextField
                         required
                         id="firstName"
-                        name="firstName"
-                        label="First name"
+                        product_name="firstName"
+                        label="First product_name"
                         fullWidth
                         value={firstName}
                         onChange={e => setFirstName(e.target.value)}
-                        autoComplete="given-name"
+                        autoComplete="given-product_name"
                         variant="standard"
                     />
                 </Grid>
@@ -107,12 +121,12 @@ export const Checkout = () => {
                     <TextField
                         required
                         id="lastName"
-                        name="lastName"
-                        label="Last name"
+                        product_name="lastName"
+                        label="Last product_name"
                         fullWidth
                         value={lastName}
                         onChange={e => setLastName(e.target.value)}
-                        autoComplete="family-name"
+                        autoComplete="family-product_name"
                         variant="standard"
                     />
                 </Grid>
@@ -120,7 +134,7 @@ export const Checkout = () => {
                     <TextField
                         required
                         id="address1"
-                        name="address1"
+                        product_name="address1"
                         label="Address line 1"
                         fullWidth
                         value={address}
@@ -132,7 +146,7 @@ export const Checkout = () => {
                 <Grid item xs={12}>
                     <TextField
                         id="address2"
-                        name="address2"
+                        product_name="address2"
                         label="Address line 2"
                         fullWidth
                         autoComplete="shipping address-line2"
@@ -143,7 +157,7 @@ export const Checkout = () => {
                     <TextField
                         required
                         id="city"
-                        name="city"
+                        product_name="city"
                         label="City"
                         fullWidth
                         value={city}
@@ -155,7 +169,7 @@ export const Checkout = () => {
                 <Grid item xs={12} sm={6}>
                     <TextField
                         id="state"
-                        name="state"
+                        product_name="state"
                         label="State/Province/Region"
                         fullWidth
                         value={state}
@@ -167,7 +181,7 @@ export const Checkout = () => {
                     <TextField
                         required
                         id="zip"
-                        name="zip"
+                        product_name="zip"
                         label="Zip / Postal code"
                         fullWidth
                         value={zip}
@@ -191,7 +205,7 @@ export const Checkout = () => {
                         id="cardName"
                         label="Name on card"
                         fullWidth
-                        autoComplete="cc-name"
+                        autoComplete="cc-product_name"
                         variant="standard"
                         value={cardName}
                         onChange={e => setCardName(e.target.value)}
@@ -256,15 +270,15 @@ export const Checkout = () => {
                                 {
                                     order.map((item, index) => <>
                                         <ListItem alignItems='center' key={index} sx={{ py: 1, px: 0 }}>
-                                            <ListItemText primary={<Typography variant='h6'>{item.name}</Typography>} secondary={<><div>{item.description}</div>
+                                            <ListItemText primary={<Typography variant='h6'>{item.product_name}</Typography>} secondary={<><div>{item.product_description}</div>
                                                 <Stack sx={{ textAlign: "start", alignItems: "start", my: 1.5 }}>
-                                                    <Typography >Price: ${item.price}</Typography>
-                                                    <Typography >Quantity: {item.quantity}</Typography>
+                                                    <Typography >Price: ${item.product_price}</Typography>
+                                                    <Typography >Quantity: {item.product_stock}</Typography>
 
                                                 </Stack>
                                             </>} />
 
-                                            <Typography sx={{ fontWeight: "bold", }}>${item.price * item.quantity}</Typography>
+                                            <Typography sx={{ fontWeight: "bold", }}>${item.product_price * item.product_stock}</Typography>
                                         </ListItem></>
                                     )
                                 }
@@ -352,7 +366,7 @@ export const Checkout = () => {
     if (!orders) {
         return <></>
     }
-    return <Container component="main" maxWidth={'sm'} sx={{ mb: 4}}>
+    return <Container component="main" maxWidth={'sm'} sx={{ mb: 4 }}>
         <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
             <Typography component="h1" variant="h4" align="center">
                 Checkout
@@ -371,7 +385,7 @@ export const Checkout = () => {
                             Thank you for your order.
                         </Typography>
                         <Typography variant="subtitle1">
-                            Your order number is #2001539. We have notified the farmer of your purchase
+                            Your order number is {orderNumbers} We have notified the farmer of your purchase
                             and he will work to fulfill your order as soon as possible. You can view the
                             status of your order on your <Link to='/dashboard'>dashboard</Link>
                         </Typography>
@@ -388,7 +402,7 @@ export const Checkout = () => {
 
                             <Button
                                 variant="contained"
-                                onClick={ activeStep === steps.length - 1 ? handleSubmit : handleNext}
+                                onClick={activeStep === steps.length - 1 ? handleSubmit : handleNext}
                                 sx={{ mt: 3, ml: 1 }}
                             >
                                 {activeStep === steps.length - 1 ? 'Place order' : 'Next'}

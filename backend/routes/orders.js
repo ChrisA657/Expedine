@@ -4,15 +4,15 @@ const Product = require('../models/orders');
 const router = express.Router();
 
 //4.1 create cart
-router.post('/', async (req, res, next) => {
-    try {
-        const body = req.body;
-        const result = await Product.createCart(body.user_id, body.product_id, body.quantity);
-        res.status(201).json(result);
-    } catch (err) {
-        console.error('Failed to create new cart:', err);
-        res.status(500).json({ message: err.toString() });
-    }
+router.post('/', async(req, res, next) => {
+        try {
+            const body = req.body;
+            const result = await Product.createCart(body.user_id, body.product_id, body.quantity);
+            res.status(201).json(result);
+        } catch (err) {
+            console.error('Failed to create new cart:', err);
+            res.status(500).json({ message: err.toString() });
+        }
 
     next();
 })
@@ -27,18 +27,18 @@ router.get('/:user_id', async (req, res, next) => {
         res.status(500).json({ message: err.toString() });
     }
 
-    next();
-})
-//4.2 and 4.3 get product by id
-router.get('/product/:product_id', async (req, res, next) => {
-    try {
-        const product_id=req.params.product_id;
-        const result = await Product.fetchProductByID(product_id);
-        res.status(200).json(result);
-    } catch (err) {
-        console.error('Failed to get product by ID:', err); 
-        res.status(500).json({ message: err.toString() });
-    }
+        next();
+    })
+    //4.2 and 4.3 get product by id
+router.get('/product/:product_id', async(req, res, next) => {
+        try {
+            const product_id = req.params.product_id;
+            const result = await Product.fetchProductByID(product_id);
+            res.status(200).json(result);
+        } catch (err) {
+            console.error('Failed to get product by ID:', err);
+            res.status(500).json({ message: err.toString() });
+        }
 
     next();
 })
@@ -53,27 +53,29 @@ router.post('/checkout', async (req, res, next) => {
         res.status(500).json({ message: err.toString() });
     }
 
-    next();
-})
-//delete cart
-router.delete('/clear', async (req, res, next) => {
-    try {
-        const body = req.body;
-        const result = await Product.clearCart(body.user_id);
-        res.status(204).json(result);
-    } catch (err) {
-        console.error('Failed to clear cart:', err);
-        res.status(500).json({ message: err.toString() });
-    }
+        next();
+    })
+    //delete cart
+router.delete('/clear', async(req, res, next) => {
+        try {
+            
+            const body = req.body;
+            const result = await Product.clearCart(body.user_id);
+            res.status(204).json(result);
+        } catch (err) {
+            console.error('Failed to clear cart:', err);
+            res.status(500).json({ message: err.toString() });
+        }
 
     next();
 })
 //delete item from cart
-router.delete('/clear/:product_id', async (req, res, next) => {
+router.delete('/clear/:user_id/:product_id', async (req, res, next) => {
     try {
+        console.log(req.body);
         const product_id=req.params.product_id;
-        const body = req.body;
-        const result = await Product.deleteCartProduct(product_id,body.user_id);
+        
+        const result = await Product.deleteCartProduct(product_id,req.params.user_id);
         res.status(204).json(result);
     } catch (err) {
         console.error('Failed to delete product from cart:', err);

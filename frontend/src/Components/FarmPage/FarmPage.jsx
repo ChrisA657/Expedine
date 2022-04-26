@@ -2,7 +2,7 @@
 import { useContext, useEffect, useState } from "react"
 
 import { useParams } from "react-router-dom";
-import { getFarmById } from "../../api/farms";
+import { getFarm, getFarmById } from "../../api/farms";
 import { farm } from "../../models/farm";
 import FarmImg from '../../images/farm.jpg';
 import horse from '../../images/horse.jpg';
@@ -30,6 +30,7 @@ const FarmPage = () => {
     const [addItemDetails, setAddItemDetails] = useState();
     const [showAddItem, setShowAddItem] = useState(false);
     const [refresh, setRefresh] = useState(false);
+    
     const userContext = useContext(UserContext);
 
     const [thisfarm, setFarm] = useState(new farm(
@@ -58,6 +59,7 @@ const FarmPage = () => {
         setShowEditItemDialog(true);
         setAddItemDetails(item)
     }
+    
     useEffect(() => {
         if (params.farmId) {
             getFarmById(params.farmId).then(res => setFarm({
@@ -66,11 +68,12 @@ const FarmPage = () => {
                 farmDescription: res.data.farmInfo[0].farm_description,
                 farmImage: res.data.farmInfo[0].farm_image_url,
                 items: res.data.products,
-                events: res.data.events
+                events: res.data.events,
+                owner_id: res.data.farmInfo[0].owner_id
             }));
         }
         console.log(thisfarm)
-    }, [showCreateEvent, showAddItem, showEditItemDialog, refresh]);
+    }, [showCreateEvent, showAddItem, showEditItemDialog, showEditFarm, refresh]);
 
 
     if (showAddItem)
@@ -88,9 +91,11 @@ const FarmPage = () => {
                             <p className=""> {thisfarm.farmDescription} </p>
                         </div>
                         <div className="column">
-                            <div to="/editfarm" className="btn btn-success float-end" onClick={() => setShowEditFarm(true)}>
-                                Edit Farm
-                            </div>
+                            {
+                               userContext.userData.user_id == thisfarm.owner_id && <div to="/editfarm" className="btn btn-success float-end" onClick={() => setShowEditFarm(true)}>
+                                    Edit Farm
+                                </div>
+                            }
                             <div className="clearfix"></div>
                         </div>
                     </div>
@@ -101,9 +106,12 @@ const FarmPage = () => {
                 Items for Sale
             </Typography>
             {
-                userContext.userData.userId == params.farmId && <div onClick={() => setShowAddItem(true)} className="btn btn-success mb-2 float-end">
+                userContext.userData.user_id == thisfarm.owner_id && <><div className="clearfix">
+                <div onClick={() => setShowAddItem(true)} className="btn btn-success mb-2 float-end">
                     Add items to your farm
                 </div>
+                </div>
+                </>
             }
             <Grid container
                 spacing={2}
@@ -114,11 +122,11 @@ const FarmPage = () => {
             >
                 {
                     thisfarm.items && thisfarm.items.map((item, index) => {
-                        return <Grid item xs={12} sm={6} md={4} lg={2} key={index} padding={0}>
+                        return <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={index} padding={0}>
                             <ItemCard
                                 {...item}
-                                addText={userContext.userData.userId == params.farmId ? "Edit item" : "Add to cart"}
-                                action={item => userContext.userData.userId == params.farmId ? handleEditItem(item) : handleAddItem(item)} />
+                                addText={userContext.userData.user_id == thisfarm.owner_id ? "Edit item" : "Add to cart"}
+                                action={item => userContext.userData.user_id == thisfarm.owner_id ? handleEditItem(item) : handleAddItem(item)} />
                         </Grid>
                     })
                 }
@@ -129,7 +137,7 @@ const FarmPage = () => {
                 Farm Events
             </Typography>
             {
-                userContext.userData.userId == params.farmId && <div onClick={() => setShowCreateEvent(true)} className="btn btn-success mb-2 float-end">
+                userContext.userData.user_id == thisfarm.owner_id && <div onClick={() => setShowCreateEvent(true)} className="btn btn-success mb-2 float-end">
                     Create new event
                 </div>
             }
@@ -158,24 +166,22 @@ const FarmPage = () => {
                 showEditItemDialog && <AddItemToFarmDialog
                     open={showEditItemDialog}
                     setOpen={setShowEditItemDialog}
-                    itemName={addItemDetails.name}
-                    itemId={addItemDetails.itemId}
-                    itemDescription={addItemDetails.description}
+                    
                     {...addItemDetails} />
             }
             {
                 showEditFarm && <EditFarmDialog open={showEditFarm}
                     setOpen={setShowEditFarm}
-                    farmName={thisfarm.farmName}
-                    farmDescription={thisfarm.farmDescription}
-                    farmImage={thisfarm.farmImage}
+                    farm_name={thisfarm.farmName}
+                    farm_description={thisfarm.farmDescription}
+                    farm_image_url={thisfarm.farmImage}
                     farmId={params.farmId} />
             }
 
             {showCreateEvent && <CreateEventDialog 
                                     open={showCreateEvent} 
                                     setOpen={setShowCreateEvent} 
-                                    farmId={params.farmId}
+                                    farmer_id={params.farmId}
                                      />}
         </div>
     </>;

@@ -26,10 +26,10 @@ router.post('/', async (req, res) =>{
     }
 
 })
-router.put('/', async (req, res) =>{
+router.put('/:event_id', async (req, res) =>{
     try{
         const body = req.body;
-        const result = await Event.updateEvent(body.event_id, body.event_name, body.event_description, body.event_image_url, body.farmer_id, body.date, body.time);
+        const result = await Event.updateEvent(req.params.event_id, body.event_name, body.event_description, body.event_image_url, body.farmer_id, body.date, body.time);
         res.status(201).json(result);
     }catch (err){
         console.error('Failed to update event information:', err);

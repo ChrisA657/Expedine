@@ -17,6 +17,12 @@ export const getFarm = (params) => {
     return axios.get(`${apiEndpoint}/`, _apiConfig)
                 
 }
+export const searchFarms = (searchData) => {
+    console.log(searchData);
+    return axios.post(apiURL+"search", {farmName: searchData.farmName,   
+                                        itemName: searchData.itemName,
+                                        filters: searchData.filters} );
+}
 // get a specific farm information, used for viewing specfic farms
 export const getFarmById = (id) => axios.get(`${apiEndpoint}/${id}`, apiConfig);  
 
@@ -25,11 +31,14 @@ export const updateFarmByID = (farmInfo, id) => axios.put(`${apiEndpoint}/${id}`
 
 // create a new farm
 export const createFarm = (farm) => {
-    axios.post(`${apiEndpoint}/`, farm, apiConfig)
+    return axios.post(`${apiEndpoint}/`, farm, apiConfig)
 
 }
 export const deleteFarmByID = (farm,id) => {
-    axios.delete(`${apiEndpoint}/${id}`, apiConfig)
+    return axios.delete(`${apiEndpoint}/${id}`, apiConfig)
     
 }
 
+export const getFarmOwnerID = (id) =>{
+    return axios.get(`${apiEndpoint}/farmByOwner/${id}`, apiConfig)
+}

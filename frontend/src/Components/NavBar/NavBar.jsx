@@ -14,14 +14,10 @@ import MenuItem from '@mui/material/MenuItem';
 import './NavBar.css';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { UserContext } from '../userContext';
+import { getFarmOwnerID } from '../../api/farms';
 
-const pages = [
-  { display: "Dashboard", path: "/dashboard" },
-  { display: "Feed", path: "/feed" },
-  { display: "My Farm", path: "/farms/1" },
-];
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+
 
 export const NavBar = () => {
 
@@ -29,8 +25,20 @@ export const NavBar = () => {
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [pages, setPages] = React.useState([
+    { display: "Dashboard", path: "/dashboard" },
+    { display: "Feed", path: "/feed" },
+  ]);
 
+  React.useEffect(()=>{
+    if(userContext.userData?.isFarmer){
 
+   
+    getFarmOwnerID(userContext.userData.user_id).then((res)=>{
+        setPages([...pages, {display: 'My Farm', path:`/farms/${res.data[0]?.farmer_id}`}]);
+    }) 
+  }
+},[userContext])
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -52,7 +60,7 @@ export const NavBar = () => {
   const redirect = (route) =>{
     navigate(route);
   }
-  console.log(userContext.userData)
+
   return (
     <nav className="main-navbar">
       <AppBar position="static">
@@ -69,7 +77,7 @@ export const NavBar = () => {
 
             {/* Hamburger menu */}
             {
-              userContext.userData?.userId && <>
+              userContext.userData?.user_id && <>
                 <IconButton sx={{ display: { xs: 'flex', md: 'none' } }}
                   size="large"
                   aria-label="account of current user"
@@ -123,7 +131,7 @@ export const NavBar = () => {
 
             {/* desktop page links */}
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-              {userContext.userData?.userId && pages.map((page, index) => (
+              {userContext.userData?.user_id && pages.map((page, index) => (
                 <NavLink key={index} to={page.path} >
                   <Button
                     variant='text'
@@ -136,7 +144,7 @@ export const NavBar = () => {
                 </NavLink>
               ))}
 
-              {userContext.userData?.userId && <div style={{ display: "flex", flexGrow: "1", justifyContent: "flex-end", marginRight: "24px" }}>
+              {userContext.userData?.user_id && <div style={{ display: "flex", flexGrow: "1", justifyContent: "flex-end", marginRight: "24px" }}>
                 <NavLink to={'/cart'} >
                 <Button
                   onClick={handleCloseNavMenu}
@@ -150,11 +158,11 @@ export const NavBar = () => {
 
             {/* Profile icon menu */}
             {
-              userContext.userData?.userId ?
+              userContext.userData?.user_id ?
                 <Box sx={{ flexGrow: 0 }}>
                   <Tooltip title="Open settings">
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                      <Avatar alt={userContext.userData?.userName} src="/static/images/avatar/2.jpg" />
+                      <Avatar alt={userContext.userData?.userName} src="https://smu.instructure.com/images/thumbnails/1257944/qzX5yC1AoRV9ybyzzkOq10a1SBuuKYDM3AiR8Uq8" />
                     </IconButton>
                   </Tooltip>
                   <Menu

@@ -8,14 +8,14 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Checkmark from '../../images/green-checkmark.png';
-import { Box } from '@mui/system';
+import { Box } from '@mui/material';
 import EventCard from '../eventCard/EventCard';
 import { createEvent, deleteEventById, updateEventById } from '../../api/events';
 // When creating an event, you should just pass in {open, setOpen, farmer_id, farmName}
 // When editing an event, all fields should be passed in
 // When deleting an event, all fields should be passed in
 const CreateEventDialog = ({ open, setOpen, event_name, event_description, event_image_url, date, time, event_id, setEvent, farmer_id, farmName, showDelete, setRefresh }) => {
-    console.log(time)
+    console.log(farmer_id)
     const [eventDetails, setEventDetails] = useState({
     })
     const [previewing, setPreviewing] = useState(false);
@@ -27,22 +27,25 @@ const CreateEventDialog = ({ open, setOpen, event_name, event_description, event
 
     useEffect(() => {
         let _time = time;
-        var hours = parseInt(_time.substr(0, 2));
-        if (_time.indexOf('AM') != -1 && hours == 12) {
-            _time = _time.replace('12', '0');
+        if(time) {
+            
+            var hours = parseInt(_time.substr(0, 2));
+            if (_time.indexOf('AM') != -1 && hours == 12) {
+                _time = _time.replace('12', '0');
+            }
+            if (time.indexOf('PM') != -1 && hours < 12) {
+                _time = _time.replace(hours, (hours + 12));
+            }
+            _time = _time.replace(/(AM|PM)/, '');
+            _time = _time.split(' ')[0]
+            console.log(_time);
         }
-        if (time.indexOf('PM') != -1 && hours < 12) {
-            _time = _time.replace(hours, (hours + 12));
-        }
-        _time = _time.replace(/(AM|PM)/, '');
-        _time = _time.split(' ')[0];
-        console.log(_time);
 
         setEventDetails({
             event_name,
             event_description,
             event_image_url,
-            date: new Date(date).toISOString().split('T')[0],
+            date: date ? new Date(date).toISOString().split('T')[0] : '',
             time: _time,
             event_id,
             setEvent,
@@ -59,7 +62,7 @@ const CreateEventDialog = ({ open, setOpen, event_name, event_description, event
         setProcessing(true);
         //delete event
         if (option == 1) {
-            console.log(event_id);
+            console.log("Deleting");
             deleteEventById(event_id).then(() => {
                 setProcessing(false);
                 setCompletionText('Event removed');
@@ -69,7 +72,7 @@ const CreateEventDialog = ({ open, setOpen, event_name, event_description, event
 
         }
         //IF we are passed an eventId, we are editing an event, WE should refresh the page or something to update 
-        if (event_id) {
+        else if (event_id) {
             updateEventById(eventDetails).then((res) => {
                 setProcessing(false);
                 setCompletionText('Event edited');

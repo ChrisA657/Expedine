@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Backdrop, CircularProgress, Grid, Input, InputAdornment, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 
@@ -7,9 +7,11 @@ import DialogActions from '@mui/material/DialogActions';
 
 import DialogTitle from '@mui/material/DialogTitle';
 import Checkmark from '../../images/green-checkmark.png';
+import { registerForEvent, unRegisterForEvent } from '../../api/userEvents';
+import { UserContext } from '../userContext';
+import { EventContext } from '../EventContext';
 
-
-const RegisterToEventDialog = ({ open, setOpen, eventId, farmId, farmName, unregistering}) => {
+const RegisterToEventDialog = ({ open, setOpen, event_id, farmId, farmName, unregistering}) => {
 
     const [eventDetails, setEventDetails] = useState({
     })
@@ -18,27 +20,29 @@ const RegisterToEventDialog = ({ open, setOpen, eventId, farmId, farmName, unreg
     const [dialogComplete, setDialogComplete] = useState(false);
     const [completionText, setCompletionText] = useState('')
     
+    const userContext = useContext(UserContext);
+    const eventContext = useContext(EventContext);
     const handleChange = (delta) => {
         setEventDetails({ ...eventDetails, ...delta });
     }
     const handleSubmit = () => {
         setProcessing(true);
         if(unregistering){
-            //TODO remove event from user events table
-            // // .then(()=>{\
-                   // setProcessing(false);
-            //     setDialogComplete(true);
-            //     setCompletionText("Successfully unregistered");
-            // })
+            unRegisterForEvent(userContext.userData.user_id, event_id).then((res)=>{
+                setProcessing(false);
+                setDialogComplete(true);
+                setCompletionText("Successfully Unregistered");
+                eventContext.refreshEvents();
+            })
         } else {
             
-            //todo add event to users events table
-
-            // // .then(()=>{
-                   // setProcessing(false);
-            //     setDialogComplete(true);
-            //     setCompletionText("Successfully registered");
-            // })
+            
+            registerForEvent(userContext.userData.user_id, event_id).then((res)=>{
+                setProcessing(false);
+                setDialogComplete(true);
+                setCompletionText("Successfully registered");
+                eventContext.refreshEvents();
+            })
         }
 
     }
@@ -83,11 +87,18 @@ const RegisterToEventDialog = ({ open, setOpen, eventId, farmId, farmName, unreg
     
     
     return (
-        <div>
-            
-           
+        <Backdrop
+                sx={{ flexDirection: "column", alignItems: "center", color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                open={true}>
 
-        </div>
+                <Dialog classes={{ root: { alignItems: "center", backgroundColor: "Blue" } }} open={true} onClose={handleClose}>
+                    <DialogTitle sx={{ textAlign: "center", fontWeight: "Bold" }}>Confirm RSVP</DialogTitle>
+                    <DialogActions>
+                        <Button onClick={() => setOpen(false)}>Cancel</Button>
+                        <Button onClick={() => handleSubmit()}>Confirm</Button>
+                    </DialogActions>
+                </Dialog>
+            </Backdrop>
     );
 };
 

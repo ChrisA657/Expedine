@@ -1,14 +1,10 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import Checkmark from '../../images/green-checkmark.png';
-import { Backdrop, Button, CardActionArea, CardActions, CircularProgress } from '@mui/material';
+
+import { Button, CardActions,  } from '@mui/material';
 
 import './EventCard.css';
 import { Link } from 'react-router-dom';
@@ -16,20 +12,26 @@ import { UserContext } from '../userContext';
 import { EventContext } from '../EventContext';
 import CreateEventDialog from '../CreateEventDialog/CreateEventDialog';
 import RegisterToEventDialog from '../RegisterToEventDialog/RegisterToEventDialog';
+import { getFarmById } from '../../api/farms';
 const EventCard = ({ event_name, event_description, event_id, farmName, event_image_url, time, date, setEvents, hideButton, farmer_id, isEdit, setRefresh }) => {
     console.log(farmer_id);
     const [openEditDialog, setOpenEditDialog] = useState(false);
     const [openAddOrRemoveDialog, setOpenAddOrRemoveDialog] = useState(false);
-    const [deleting, setDeleting] = useState(false);
-    const [deletingCompleted, setDeletingCompleted] = useState(false);
+    
+    const [ownerId, setOwnerId] = useState(null);
     const eventContext = useContext(EventContext);
     const userContext = useContext(UserContext);
     const fDate = new Date(date + " " + time);
 
-    const handleClose = () => {
-        setOpenEditDialog(false);
-        setOpenAddOrRemoveDialog(false);
-    };
+    useEffect(()=>{
+        if(farmer_id){
+            getFarmById(farmer_id).then(res => {
+            setOwnerId(res.data.farmInfo[0].owner_id);
+        });
+        }
+        
+        
+    },[])
 
     // const handleUnsubscribe = () => {
     //     setDeleting(true);
@@ -50,7 +52,8 @@ const EventCard = ({ event_name, event_description, event_id, farmName, event_im
 
     // }
     const handleAction = () => {
-        if (farmer_id == userContext.userData?.userId) {
+        console.log(openAddOrRemoveDialog)
+        if (ownerId == userContext.userData?.user_id) {
             setOpenEditDialog(true);
         } else {
             setOpenAddOrRemoveDialog(true);
@@ -93,10 +96,10 @@ const EventCard = ({ event_name, event_description, event_id, farmName, event_im
                 {!hideButton && <Button
                     variant="contained"
                     size="small"
-                    color={farmer_id == userContext.userData?.userId ? "error" : "primary"}
+                    color={ownerId == userContext.userData?.user_id ? "error" : "primary"}
                     fullWidth sx={{ padding: [2, 2, 1] }}
                     onClick={() => handleAction()}>
-                    {farmer_id == userContext.userData?.userId ? "Edit Event" : eventContext.events.some(e => e.event_id == event_id) ? "Unsubscribe" : "RSVP"}
+                    {ownerId == userContext.userData?.user_id ? "Edit Event" : eventContext?.events?.some(e => e.event_id == event_id) ? "Unsubscribe" : "RSVP"}
                 </Button>}
             </CardActions>
             {
@@ -127,7 +130,7 @@ const EventCard = ({ event_name, event_description, event_id, farmName, event_im
                                             event_id={event_id}
                                             farmer_id={farmer_id}
                                             farmName={farmName}
-                                            unregistering={eventContext.events.some(e => e.event_id == event_id)} />
+                                            unregistering={eventContext?.events.some(e => e.event_id == event_id)} />
             }
             {/* {
                 openRemoveDialog && <Backdrop
