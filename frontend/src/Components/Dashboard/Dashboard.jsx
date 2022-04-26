@@ -35,6 +35,10 @@ const Dashboard = () => {
                 console.log(order)
                 let items = order.result2;
                 let info = order.result1;
+
+                setOrders(orders =>{
+                    [...orders,{...info,itemsPurchased: items}]
+                })
             })
             
         })
