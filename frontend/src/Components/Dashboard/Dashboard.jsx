@@ -30,13 +30,13 @@ const Dashboard = () => {
             setfarmId(res.data[0]?.farmer_id);
         })
 
-        getOrders(2).then(res=> {
+        getOrders(userContext.userData?.isFarmer).then(res=> {
             let _orders = [];
             res.data.forEach(order=> {
                 console.log(order)
                 let items = order.result2;
                 let info = order.result1;
-                let obj ={info, itemsPurchased:items}
+                let obj = {info: info[0], itemsPurchased:items}
                _orders.push(obj);
             })
              setOrders(_orders);
@@ -60,9 +60,9 @@ const Dashboard = () => {
             <div className="dashboard-orders">
                 
                 {
-                    orders && orders.map((order)=>{
-                        return <OrderExpandable key={order.transaction_id}
-                                                {...order}
+                    orders.length !=0 && orders.map((order)=>{
+                        return <OrderExpandable key={order?.transaction_id}
+                                                {...order?.info}
                                                {...order}/>
                     })
                 }
