@@ -1,17 +1,19 @@
 import axios from "axios"
 import apiURL from "./APIURL"
 
-const apiEndpoint = apiURL + "orders"
+const apiEndpoint = apiURL + "cart"
 const apiConfig = {
     headers: {
         Authorization: "me"
     }
 
 }
-
-//get the orders associated with a user, used for dashboard
+export const createNewOrder = (order) => {
+        return axios.post(`${apiEndpoint}/checkout`, order, apiConfig);
+    }
+    //get the orders associated with a user, used for dashboard
 export const getOrders = (user_id) => {
-    axios.get(`${apiEndpoint}/${user_id}`, apiConfig);
+    axios.get(`${apiURL}/dashboard/customer/transactions/${user_id}`, apiConfig);
 }
 
 // should check authorization to make sure farmer id is the same on the order

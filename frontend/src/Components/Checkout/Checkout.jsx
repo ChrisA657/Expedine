@@ -16,6 +16,7 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { getCart } from '../../api/carts';
+import { createNewOrder } from '../../api/orders';
 export const Checkout = () => {
     const steps = ['Shipping ', 'Payment', 'Review'];
 
@@ -55,9 +56,14 @@ export const Checkout = () => {
     };
 
     const handleSubmit = () => {
+        console.log(orders)
+        orders.forEach(order=>{
+            createNewOrder({customer_id: userContext.userData.user_id, farmer_id: order[0].farmer_id ,firstName,lastName,address,city,state,zip,cardName,cardNumber,cardExprDate}).then(()=>handleNext())
+        })
+        
         handleNext();
-        //createNewOrder({cartId,firstName,lastName,address,city,state,zip,cardName,cardNumber,cardExprDate}).then(()=>handleNext())
-        setTimeout(() => handleNext(), 1000);
+        
+        
 
     }
     useEffect(() => {

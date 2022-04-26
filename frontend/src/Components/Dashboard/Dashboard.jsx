@@ -11,6 +11,7 @@ import { EventContext } from '../EventContext';
 import { UserContext } from '../userContext';
 import { getFarmOwnerID } from '../../api/farms';
 import EditFarmDialog from '../EditFarmDialog/EditFarmDialog';
+import { getOrders } from '../../api/orders';
 const Dashboard = () => {
     const userContext = useContext(UserContext);
     const [farmId, setfarmId] = useState(null);
@@ -28,6 +29,8 @@ const Dashboard = () => {
         getFarmOwnerID(userContext.userData.user_id).then((res)=>{
             setfarmId(res.data[0]?.farmer_id);
         })
+
+        getOrders(userContext.userData.user_id).then(res=>console.log(res.data))
     }
     },[])
 
