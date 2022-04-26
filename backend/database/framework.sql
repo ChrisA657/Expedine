@@ -78,6 +78,8 @@ CREATE TABLE transaction_products(
     product_id INTEGER NOT NULL, FOREIGN KEY (product_id) REFERENCES product(product_id),
     quantity INTEGER
 );
+SELECT * FROM users;
+SELECT * FROM cart;
 SELECT * FROM product;
 SELECT * FROM transactions;
 SELECT * FROM transaction_products;
