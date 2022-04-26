@@ -69,7 +69,7 @@ const unRegisterFromEvent = async (user_id, event_id) => {
 };
 
 const getEventInfo = async(event_id) => {
-    const result = await knex('event').where({event_id});
+    const result = await knex('event').join('farmer', 'farmer.farmer_id', 'event.farmer_id').where({event_id});
     return result;
 }
 

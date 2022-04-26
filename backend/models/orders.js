@@ -95,11 +95,11 @@ const updateCartQuantity = async (product_id,customer_id,quantity) => {
 //get transaction with products
 const fetchTransactionWithProducts = async (transaction_id) => {
     //get order
-    const query1 = knex('transactions').where({transaction_id});
+    const query1 = await knex('transactions').where({transaction_id});
     console.log('Raw query for getTransaction:', query1.toString());
     const result1 = await query1;
     //return product
-    const query2 = knex('transaction_products').join('product','product.product_id','transaction_products.product_id').select().where({transaction_id});
+    const query2 = await knex('transaction_products').join('product','product.product_id','transaction_products.product_id').select().where({transaction_id});
     console.log('Raw query for getProduct:', query2.toString());
     const result2 = await query2;
     return {result1, result2};
