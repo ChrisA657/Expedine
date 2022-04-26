@@ -11,8 +11,8 @@ import { Box } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import { getFarmById } from '../../api/farms';
 import { UserContext } from '../userContext';
-import { getCart } from '../../api/carts';
-
+import { deleteItemFromCart, getCart } from '../../api/carts';
+import { Link } from 'react-router-dom';
 export const Cart = () => {
     const [items, setItems] = useState([
         { product_name: "Farm", product_description: "Large variant aksk alskd aklskdk alsk", product_image_url: "https://media.gq.com/photos/56e71c0b14cbe0637b261d7f/16:9/w_2560%2Cc_limit/horseinsuit2.jpg", product_price: 14.99, product_stock: 4, farmId: 1, },
@@ -31,7 +31,7 @@ export const Cart = () => {
     }
     useEffect(() => {
         getCart(userContext.userData.user_id).then(res => setItems(res.data));
-    },[]);
+    }, []);
     useEffect(() => {
         const orders = []
         let total = 0;
@@ -57,13 +57,27 @@ export const Cart = () => {
         getFarmById(id).then(data => { return data.farmName })
     }
 
-    const deleteItem = (itemId) => {
-        let user_id = userContext.user_id;
-        //deleteItemFromCart({user_id,itemId});
+    const deleteItem = (product_id) => {
+        let user_id = userContext.userData.user_id;
+        deleteItemFromCart(user_id, product_id).then(() => {
+            getCart(userContext.userData.user_id).then(res => setItems(res.data));
+        });
+    }
+
+    if (items.length == 0) {
+        return <> 
+        <Typography variant="h3" gutterBottom sx={{ textAlign: 'center' }}>
+            Empty Cart
+        </Typography>
+        <Typography variant="h5" sx={{ textAlign: 'center' }}>
+                            Visit the <Link to='/feed'>Feed</Link> to begin exploring farms to purchase items from!
+                        </Typography>
+        </>
     }
     if (!orders) {
         return <></>
     }
+
     return (
         <div>
             <Container component="main" sx={{ mb: 4, maxWidth: ["900px"] }}>
@@ -80,7 +94,7 @@ export const Cart = () => {
                         {
                             orders.map((order, index) => (
                                 <Typography key={index} sx={{ py: 1, px: 0 }}>
-                                    <Typography variant="h5" sx={{ fontWeight: "bold", textAlign:['center'] }}>{orders.length > 1 && `Order: ${index + 1}`}</Typography>
+                                    <Typography variant="h5" sx={{ fontWeight: "bold", textAlign: ['center'] }}>{orders.length > 1 && `Order: ${index + 1}`}</Typography>
                                     <List>
 
                                         {
@@ -88,13 +102,13 @@ export const Cart = () => {
                                                 return <>
                                                     <ListItem alignItems='flex-start' key={index} sx={{ py: 1, px: 0, display: ["none", "flex"] }}>
                                                         <ListItemText primary={<Typography variant='h6'>{item.product_name}</Typography>} secondary={<><div style={{ marginLeft: "6px" }}>{item.product_description}</div>
-                                                        <Stack sx={{ textAlign: "start", alignItems: "start", my:1.5 }}>
+                                                            <Stack sx={{ textAlign: "start", alignItems: "start", my: 1.5 }}>
                                                                 <Typography >Price: ${item.product_price}</Typography>
                                                                 <Typography >Quantity: {item.product_stock}</Typography>
                                                                 <Typography sx={{ fontWeight: "bold", }}>Total: ${item.product_price * item.product_stock}</Typography>
                                                             </Stack>
-                                                            <Button variant='outlined' color='error' sx={{ mt: 1 }} onClick={() => deleteItem(item.itemId)}>Remove</Button></>} />
-                                                        <img src={item.product_image_url} style={{ width: '35%',maxHeight: "200px", maxWidth: "320px", }} />
+                                                            <Button variant='outlined' color='error' sx={{ mt: 1 }} onClick={() => deleteItem(item.product_id)}>Remove</Button></>} />
+                                                        <img src={item.product_image_url} style={{ width: '35%', maxHeight: "200px", maxWidth: "320px", }} />
                                                     </ListItem>
                                                     <Container component="li" sx={{ display: ["flex", "none"], flexDirection: 'column' }}>
                                                         <Typography sx={{ textAlign: "center" }}>{item.product_name}</Typography>
@@ -102,14 +116,14 @@ export const Cart = () => {
                                                         <img src={item.product_image_url} style={{ width: '100%', maxHeight: "200px", maxWidth: "320px", margin: "0 auto", display: "block" }} />
                                                         <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} sx={{ my: 2 }}>
                                                             <Stack sx={{ textAlign: "start", alignItems: "start" }}>
-                                                                <Typography sx={{ }}>Price: ${item.product_price}</Typography>
-                                                                <Typography sx={{  }}>Quantity: {item.product_stock}</Typography>
+                                                                <Typography sx={{}}>Price: ${item.product_price}</Typography>
+                                                                <Typography sx={{}}>Quantity: {item.product_stock}</Typography>
                                                                 <Typography sx={{ fontWeight: "bold", }}>Total: ${item.product_price * item.product_stock}</Typography>
                                                             </Stack>
 
-                                                            <Button variant='outlined' color='error' onClick={() => deleteItem(item.itemId)}>Remove</Button>
+                                                            <Button variant='outlined' color='error' onClick={() => deleteItem(item.product_id)}>Remove</Button>
                                                         </Box>
-                                                        
+
                                                     </Container>
 
                                                 </>
@@ -123,7 +137,7 @@ export const Cart = () => {
                         }
 
                         <ListItem sx={{ py: 1, px: 0 }}>
-                            <ListItemText primary={<div style={{fontWeight:'bold', fontSize:'24px'}}>Total</div>} />
+                            <ListItemText primary={<div style={{ fontWeight: 'bold', fontSize: '24px' }}>Total</div>} />
                             <Typography variant="h5" sx={{ fontWeight: 700 }}>
                                 {`$${total}`}
                             </Typography>

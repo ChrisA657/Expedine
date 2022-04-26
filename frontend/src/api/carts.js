@@ -20,8 +20,9 @@ export const addItemToCart = (item) =>{
     return axios.post(`${apiEndpoint}/`, item);
 }
 
-export const deleteItemFromCart = (user_id, itemId) => {
-    return axios.delete(`${apiEndpoint}/${user_id}/${itemId}`)
+export const deleteItemFromCart = (user_id, product_id) => {
+    console.log(user_id + " + " + product_id);
+    return axios.delete(`${apiEndpoint}/clear/${user_id}/${product_id}`, {user_id});
 }
 
 // create an order from the items in the carts
