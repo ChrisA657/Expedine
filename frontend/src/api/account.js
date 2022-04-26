@@ -5,8 +5,7 @@ const apiEndpoint = apiURL + "account";
 const passwordEndpoint = apiURL;
 const apiConfig = {
     headers: {
-        Authorization: "me",
-        'content-type': 'text/json'
+        Authorization: "me"
     }
 
 }
@@ -38,6 +37,24 @@ export const register = (userdata) => new Promise((resolve,reject) =>{
 
             })
 })
+
+export const getUserID = (user_email) => new Promise ((resolve, reject) => {
+    axios.get(`${apiEndpoint}/${user_email}`)
+    .then(res =>
+        resolve(res.data)
+    )
+    .catch(err => {
+        if (err.response) {
+            console.log(err);
+            reject(err.response)
+        } else if (err.request){
+            reject("Server didn't respond");
+        } else {
+            reject("Request failed");
+        }
+
+    })
+});
 
 export const resetPassword = (user, password) => new Promise((resolve, reject) => {
     const params = {'user_id' : user, 'newPassword': password};

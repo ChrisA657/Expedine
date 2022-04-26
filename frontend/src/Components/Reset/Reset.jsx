@@ -1,27 +1,30 @@
 import { useState, useEffect} from "react";
 import './Reset.css';
-import { resetPassword } from "../../api/account";
-import { Link, useNavigate } from "react-router-dom";
+import { resetPassword, getUserID } from "../../api/account";
+import { useNavigate } from "react-router-dom";
 
 const Reset = () => {
     const [User, setUsername] = useState("");
+    const [RUser, setRUsername] = useState("");
     const [Password, setPassword] = useState("");
     const [cPassword, setCPassword] = useState("");
 
     const navigate = useNavigate();
 
     useEffect(() => {
-    }, []);
+    }, [ ]);
 
     const handleSubmit = () => {
         if(Password != cPassword){
             alert("Passwords do not match");
         }
-        const User = 1;
-        resetPassword(User, Password).then(()=>{
-            navigate("/login");
-        })
+        getUserID(User).then(x => setRUsername(x[0].user_id))
+        .then(resetPassword(RUser, Password)).then(() => {
+            // navigate("/login");
+        }
+        )
     }
+
 
     return (
         <form>
@@ -38,8 +41,8 @@ const Reset = () => {
                     <input type="password" className ="form-control" value={Password} name="user" id="password" onChange={event => setPassword(event.target.value)} />
                 </div>
                 <div className="form-outline mb-4">
-                    <label htmlFor="cpassword" className="form-label"> Confirm Password</label>
-                    <input type="cpassword" className ="form-control" value={cPassword} name="user" id="cpassword" onChange={event => setCPassword(event.target.value)} />
+                    <label htmlFor="password" className="form-label"> Confirm Password</label>
+                    <input type="password" className ="form-control" value={cPassword} name="user" id="password" onChange={event => setCPassword(event.target.value)} />
                 </div>
                 <button type="button" className="btn btn-primary mb-4" onClick={() => handleSubmit()}>Reset Password</button>
             </div>
