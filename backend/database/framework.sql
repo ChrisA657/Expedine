@@ -8,7 +8,7 @@ DROP TABLE customer_event_interests, farmer, product, transactions, users, cart,
 
 CREATE TABLE users(
     user_id INTEGER AUTO_INCREMENT, PRIMARY KEY(user_id),
-	email VARCHAR(50) NOT NULL,
+	email VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(50) NOT NULL,
 	first_name VARCHAR(50),
     last_name VARCHAR(50),
@@ -97,7 +97,7 @@ CREATE TABLE transaction_products(
 #
 # );
 
-SELECT * FROM farmer;
+SELECT * FROM event;
 
 INSERT INTO users(email, password, first_name, last_name, isFarmer)
 VALUES ('smu@email.edu', 'Password123', 'John', 'Deere', 1),

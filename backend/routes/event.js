@@ -4,6 +4,16 @@ const Event = require('../models/event');
 
 const router = express.Router();
 
+router.get('/:event_id', async (req, res) => {
+    try{
+        const result = await Event.getEventInfo(req.params.event_id);
+        res.status(200).json(result);
+    } catch (err) {
+        console.error('Failed to get customer transactions', err);
+        res.status(500).json({ message: err.toString() });
+    }
+})
+
 router.post('/', async (req, res) =>{
 //5.1 I want to be able to post about events on my account page
     try{

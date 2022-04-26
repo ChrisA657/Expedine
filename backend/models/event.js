@@ -64,8 +64,17 @@ const deleteEvent = async (event_id) => {
     return result;
 };
 
+const unRegisterFromEvent = async (user_id, event_id) => {
+    const result = await knex('customer_event_interests').where('customer_id', user_id).where({event_id}).del();
+    console.log('Raw query for unregister user from event:', result.toString());
 
+    return result;
+};
 
+const getEventInfo = async(event_id) => {
+    const result = await knex('event').where({event_id});
+    return result;
+}
 
 module.exports = {
 
@@ -78,5 +87,7 @@ module.exports = {
     getUsersInterestedEvents,
     getAllUserEvents,
     signUserForEvent,
-    deleteUserInterestedEvents
+    deleteUserInterestedEvents,
+    unRegisterFromEvent,
+    getEventInfo
 };
