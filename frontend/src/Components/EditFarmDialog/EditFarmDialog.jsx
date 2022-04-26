@@ -9,7 +9,7 @@ import DialogContent from '@mui/material/DialogContent';
 
 import DialogTitle from '@mui/material/DialogTitle';
 import Checkmark from '../../images/green-checkmark.png';
-
+import {updateFarmByID} from '../../api/farms'
 const EditFarmDialog = ({ open, setOpen, farmName, farmDescription, farmImage, dateFounded, farmId }) => {
 
     const [farmDetails, setFarmDetails] = useState({});
@@ -29,7 +29,7 @@ const EditFarmDialog = ({ open, setOpen, farmName, farmDescription, farmImage, d
     };
     const handleSubmit = () => {
         setProcessing(true);
-        //editFarmById(farmId).then()
+        updateFarmByID(farmId).then()
         setTimeout(() => {
             setProcessing(false);
             setDialogComplete(true);

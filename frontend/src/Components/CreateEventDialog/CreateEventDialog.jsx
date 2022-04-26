@@ -62,7 +62,7 @@ const CreateEventDialog = ({ open, setOpen, event_name, event_description, event
         setProcessing(true);
         //delete event
         if (option == 1) {
-            console.log(event_id);
+            console.log("Deleting");
             deleteEventById(event_id).then(() => {
                 setProcessing(false);
                 setCompletionText('Event removed');
@@ -72,7 +72,7 @@ const CreateEventDialog = ({ open, setOpen, event_name, event_description, event
 
         }
         //IF we are passed an eventId, we are editing an event, WE should refresh the page or something to update 
-        if (event_id) {
+        else if (event_id) {
             updateEventById(eventDetails).then((res) => {
                 setProcessing(false);
                 setCompletionText('Event edited');
