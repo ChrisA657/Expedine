@@ -69,7 +69,7 @@ export const NavBar = () => {
 
             {/* Hamburger menu */}
             {
-              userContext.userData?.userId && <>
+              userContext.userData?.user_id && <>
                 <IconButton sx={{ display: { xs: 'flex', md: 'none' } }}
                   size="large"
                   aria-label="account of current user"
@@ -123,7 +123,7 @@ export const NavBar = () => {
 
             {/* desktop page links */}
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-              {userContext.userData?.userId && pages.map((page, index) => (
+              {userContext.userData?.user_id && pages.map((page, index) => (
                 <NavLink key={index} to={page.path} >
                   <Button
                     variant='text'
@@ -136,7 +136,7 @@ export const NavBar = () => {
                 </NavLink>
               ))}
 
-              {userContext.userData?.userId && <div style={{ display: "flex", flexGrow: "1", justifyContent: "flex-end", marginRight: "24px" }}>
+              {userContext.userData?.user_id && <div style={{ display: "flex", flexGrow: "1", justifyContent: "flex-end", marginRight: "24px" }}>
                 <NavLink to={'/cart'} >
                 <Button
                   onClick={handleCloseNavMenu}
@@ -150,7 +150,7 @@ export const NavBar = () => {
 
             {/* Profile icon menu */}
             {
-              userContext.userData?.userId ?
+              userContext.userData?.user_id ?
                 <Box sx={{ flexGrow: 0 }}>
                   <Tooltip title="Open settings">
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

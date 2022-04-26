@@ -51,7 +51,7 @@ const EventCard = ({ event_name, event_description, event_id, farmName, event_im
     // }
     const handleAction = () => {
         console.log(openAddOrRemoveDialog)
-        if (farmer_id == userContext.userData?.userId) {
+        if (farmer_id == userContext.userData?.user_id) {
             setOpenEditDialog(true);
         } else {
             setOpenAddOrRemoveDialog(true);
@@ -94,10 +94,10 @@ const EventCard = ({ event_name, event_description, event_id, farmName, event_im
                 {!hideButton && <Button
                     variant="contained"
                     size="small"
-                    color={farmer_id == userContext.userData?.userId ? "error" : "primary"}
+                    color={farmer_id == userContext.userData?.user_id ? "error" : "primary"}
                     fullWidth sx={{ padding: [2, 2, 1] }}
                     onClick={() => handleAction()}>
-                    {farmer_id == userContext.userData?.userId ? "Edit Event" : eventContext?.events?.some(e => e.event_id == event_id) ? "Unsubscribe" : "RSVP"}
+                    {farmer_id == userContext.userData?.user_id ? "Edit Event" : eventContext?.events?.some(e => e.event_id == event_id) ? "Unsubscribe" : "RSVP"}
                 </Button>}
             </CardActions>
             {

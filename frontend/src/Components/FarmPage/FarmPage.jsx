@@ -101,7 +101,7 @@ const FarmPage = () => {
                 Items for Sale
             </Typography>
             {
-                userContext.userData.userId == params.farmId && <div onClick={() => setShowAddItem(true)} className="btn btn-success mb-2 float-end">
+                userContext.userData.user_id == params.farmId && <div onClick={() => setShowAddItem(true)} className="btn btn-success mb-2 float-end">
                     Add items to your farm
                 </div>
             }
@@ -117,8 +117,8 @@ const FarmPage = () => {
                         return <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={index} padding={0}>
                             <ItemCard
                                 {...item}
-                                addText={userContext.userData.userId == params.farmId ? "Edit item" : "Add to cart"}
-                                action={item => userContext.userData.userId == params.farmId ? handleEditItem(item) : handleAddItem(item)} />
+                                addText={userContext.userData.user_id == params.farmId ? "Edit item" : "Add to cart"}
+                                action={item => userContext.userData.user_id == params.farmId ? handleEditItem(item) : handleAddItem(item)} />
                         </Grid>
                     })
                 }
@@ -129,7 +129,7 @@ const FarmPage = () => {
                 Farm Events
             </Typography>
             {
-                userContext.userData.userId == params.farmId && <div onClick={() => setShowCreateEvent(true)} className="btn btn-success mb-2 float-end">
+                userContext.userData.user_id == params.farmId && <div onClick={() => setShowCreateEvent(true)} className="btn btn-success mb-2 float-end">
                     Create new event
                 </div>
             }

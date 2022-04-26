@@ -28,9 +28,9 @@ const Login = () => {
         login({ email, password })
             .then((res) => {
                 console.log(res.data)
-                context.setUserData({
-                    userData: res.data
-                })
+                context.setUserData(
+                    res.data
+                )
                 navigate('/dashboard');
             })
             .catch((err) => alert("error logging in: " + err));

@@ -55,8 +55,8 @@ export const Cart = () => {
     }
 
     const deleteItem = (itemId) => {
-        let userId = userContext.userId;
-        //deleteItemFromCart({userId,itemId});
+        let user_id = userContext.user_id;
+        //deleteItemFromCart({user_id,itemId});
     }
     if (!orders) {
         return <></>

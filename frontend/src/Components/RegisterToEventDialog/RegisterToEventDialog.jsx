@@ -36,7 +36,7 @@ const RegisterToEventDialog = ({ open, setOpen, event_id, farmId, farmName, unre
         } else {
             
             
-            registerForEvent(userContext.userData.userId, event_id).then(()=>{
+            registerForEvent(userContext.userData.user_id, event_id).then(()=>{
                 setProcessing(false);
                 setDialogComplete(true);
                 setCompletionText("Successfully registered");
