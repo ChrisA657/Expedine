@@ -31,16 +31,15 @@ const Dashboard = () => {
         })
 
         getOrders(2).then(res=> {
+            let _orders = [];
             res.data.forEach(order=> {
                 console.log(order)
                 let items = order.result2;
                 let info = order.result1;
-
-                setOrders(orders =>{
-                    // [...orders,{...info,itemsPurchased: items}]
-                })
+                let obj ={info, itemsPurchased:items}
+               _orders.push(obj);
             })
-            
+             setOrders(_orders);
         })
     }
     },[])
@@ -62,7 +61,8 @@ const Dashboard = () => {
                 
                 {
                     orders && orders.map((order)=>{
-                        return <OrderExpandable key={order.orderId}
+                        return <OrderExpandable key={order.transaction_id}
+                                                {...order}
                                                {...order}/>
                     })
                 }
