@@ -21,11 +21,12 @@ const fetchProductByID = async (product_id) => {
     return result;
 };
 //create new order
-const createOrder = async (firstName, lastName, address, city, state, zip, cardName, cardNumber, cardExprDate, purchaseDate, farmer_id, customer_id, product_id, quantity, price) => {
+const createOrder = async (firstName, lastName, address, city, state, zip, cardName, cardNumber, cardExprDate, farmer_id, customer_id) => {
     //add order to table
-    const query = knex('transactions').insert({ firstName, lastName, address, city, state, zip, cardName, cardNumber, cardExprDate, purchaseDate, farmer_id, customer_id, product_id, quantity, price });
+    const query = knex('transactions').insert({ firstName, lastName, address, city, state, zip, cardName, cardNumber, cardExprDate, farmer_id, customer_id });
     console.log('Raw query for createOrder:', query.toString());
     const result = await query;
+    console.log('result:',result);
     //get most recent order number
     const query2 = knex('transactions').max('transaction_id', {as: 'recentOrder'});
     console.log('Raw query for getOrder:', query2.toString());
@@ -40,19 +41,27 @@ const createOrder = async (firstName, lastName, address, city, state, zip, cardN
     const result4 = await query4;
     //add products to transaction
     for(let i=0;i<result4.length;i++){
+        //add to transaction products
         const query0 = knex('transaction_products').insert({ transaction_id: result2[0].recentOrder, product_id: result4[i].product_id, quantity: result4[i].quantity});
         console.log('Raw query for addProductsToTransaction:', query0.toString());
         const result0 = await query0;
+        //get product
+        const product_query = knex('product').where({product_id: result4[i].product_id});
+        console.log('Raw query for getCart:', product_query.toString());
+        const products = await product_query;
+        //update product inventory
+        const newInventory = products[0].product_stock - result4[i].quantity;
+        const inventory_query = knex('product').where({product_id: result4[i].product_id}).update({product_stock:newInventory});
+        console.log('Raw query for updateProductInventory:', inventory_query.toString());
+        const inventory_result = await inventory_query;
     }
     //remove products from cart
     const query5 = knex('cart').where({customer_id}).del();
     console.log('Raw query for deleteCart:', query5.toString());
     const result5 = await query5;
-    //get transaction products
-    const query6 = knex('transaction_products').where({transaction_id: result2[0].recentOrder});
-    console.log('Raw query for getTransactionProducts:', query6.toString());
-    const result6 = await query6;
-    return result3+result6;
+    //get transaction products FIX
+    const result6 = await fetchTransactionWithProducts(result2[0].recentOrder);
+    return result6;
 }
 //get product by cart
 const fetchCartProducts = async (customer_id) => {
@@ -83,6 +92,18 @@ const updateCartQuantity = async (product_id,customer_id,quantity) => {
     const result = await query;
     return null;
 }
+//get transaction with products
+const fetchTransactionWithProducts = async (transaction_id) => {
+    //get order
+    const query1 = knex('transactions').where({transaction_id});
+    console.log('Raw query for getTransaction:', query1.toString());
+    const result1 = await query1;
+    //return product
+    const query2 = knex('transaction_products').join('product','product.product_id','transaction_products.product_id').select().where({transaction_id});
+    console.log('Raw query for getProduct:', query2.toString());
+    const result2 = await query2;
+    return {result1, result2};
+};
 
 module.exports = {
     createCart,
@@ -91,5 +112,6 @@ module.exports = {
     fetchCartProducts,
     clearCart,
     deleteCartProduct,
-    updateCartQuantity
+    updateCartQuantity,
+    fetchTransactionWithProducts
 };

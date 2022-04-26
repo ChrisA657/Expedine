@@ -2,19 +2,17 @@ const knex = require('../database/knex');
 
 //Get all transactions by user
 const fetchTransactions = async (user_id) => {
+    //get transactions by user
     const query = knex('transactions').where({farmer_id: user_id}).orWhere({customer_id: user_id});
     const result = await query;
-    return result;
-}
-//get transaction by ID
-const fetchTransactionByID = async (transaction_id) => {
-    //return transaction
-    const query = knex('transactions').where({transaction_id});
-    console.log('Raw query for getTransaction:', query.toString());
-    const result = await query;
-    return result;
+    //get transaction + products for each transaction
+    var transactions = [];
+    for(let i=1;i<result.length;i++){
+        const txn = await fetchTransactionWithProducts(result[i].transaction_id);
+        transactions.push(txn);
+    }
+    return transactions;
 };
-
 //get most common customers    //untested
 const fetchMostCommonCustomers = async (farmer_id) => {
     //return transaction
@@ -31,8 +29,8 @@ const fetchInterestedEvents = async (user_id) => {
     return result;
 }
 //delete interested events
-const deleteInterestedEvent = async (customer_event_interests_id) => {
-    const query = knex('customer_event_interests').where({customer_event_interests_id}).del();
+const deleteInterestedEvent = async (event_id,customer_id) => {
+    const query = knex('customer_event_interests').where({event_id}).andWhere({customer_id}).del();
     console.log('Raw query for delete interested event:', query.toString());
     const result = await query;
 
@@ -46,13 +44,23 @@ const deleteAllInterestedEvents = async (customer_id) => {
 
     return result;
 };
+//get transaction with products
+const fetchTransactionWithProducts = async (transaction_id) => {
+    //get order
+    const query1 = knex('transactions').where({transaction_id});
+    console.log('Raw query for getTransaction:', query1.toString());
+    const result1 = await query1;
+    //return product
+    const query2 = knex('transaction_products').join('product','product.product_id','transaction_products.product_id').select().where({transaction_id});
+    console.log('Raw query for getProduct:', query2.toString());
+    const result2 = await query2;
+    return {result1, result2};
+};
 
 module.exports = {
     fetchTransactions,
-    fetchTransactionByID,
-
+    fetchTransactionWithProducts,
     fetchMostCommonCustomers,
-
     fetchInterestedEvents,
     deleteInterestedEvent,
     deleteAllInterestedEvents
