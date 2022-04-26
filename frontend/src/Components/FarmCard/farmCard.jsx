@@ -40,7 +40,7 @@ export const FarmCard = ({ farm, itemsPerFarm }) => {
             </Grid>
             <Grid container textAlign={"center"}>
 
-                <Typography fontWeight={"bold"} mt={4} mb={2} textAlign={"center"}>
+                <Typography variant='h4' fontWeight={"bold"} mt={4} mb={2} textAlign={"center"}>
                     Items for sale
                 </Typography>
                 <Grid container

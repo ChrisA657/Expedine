@@ -26,7 +26,7 @@ const Dashboard = () => {
     useEffect(()=>{
         if(userContext.userData?.isFarmer) {
         getFarmOwnerID(userContext.userData.user_id).then((res)=>{
-            setfarmId(res.data[0].farmer_id);
+            setfarmId(res.data[0]?.farmer_id);
         })
     }
     },[])
@@ -38,7 +38,7 @@ const Dashboard = () => {
         
         <div className='dashboard'>
             {
-                userContext.userData.isFarmer && !farmId && <>
+                !farmId && userContext.userData.isFarmer == 1 &&  <>
                     <Typography variant='h4' color='error' mb={2}>You have no farm as a farmer, create one now!</Typography>
                     <Button variant={'contained'} onClick={openCreateFarm}>Create your farm</Button></>
             }

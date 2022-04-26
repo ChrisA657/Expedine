@@ -33,7 +33,7 @@ const EditFarmDialog = ({ open, setOpen, farm_name, farm_description, farm_image
         setProcessing(true);
         if (creating) {
             createFarm({...farmDetails, owner_id}).then(res=>{
-                navigate('/farms/' + res.data.farmer_id);
+                navigate('/farms/' + res.data);
             });
         } else {
             updateFarmByID(farmDetails, farmId).then()
