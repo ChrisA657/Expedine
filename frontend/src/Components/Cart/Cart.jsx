@@ -7,7 +7,7 @@ import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 import { Button, Container, Paper, Stack } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { Box } from '@mui/system';
+import { Box } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import { getFarmById } from '../../api/farms';
 import { UserContext } from '../userContext';

@@ -10,7 +10,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Checkmark from '../../images/green-checkmark.png';
 import './AddItemToFarmDialog.css';
-import { Box } from '@mui/system';
+import { Box } from '@mui/material';
 import { addItemToFarm, deleteItemFromFarm, editFarmItem } from '../../api/items';
 import { useNavigate, useParams } from 'react-router-dom';
 // TODO Add fail logic and style to adding item

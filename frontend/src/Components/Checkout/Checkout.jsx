@@ -6,7 +6,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
 import { Backdrop, Button, Checkbox, CircularProgress, Container, Divider, FormControlLabel, Paper, Stack, TextField } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import { Box } from '@mui/system';
+import { Box } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import { getFarmById } from '../../api/farms';
 import { UserContext } from '../userContext';

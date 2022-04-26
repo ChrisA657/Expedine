@@ -4,7 +4,7 @@ import { AiOutlineArrowDown } from 'react-icons/ai';
 import Collapsible from 'react-collapsible';
 import { UserContext } from '../userContext';
 import { Button, Container, Divider, Grid, List, ListItem, ListItemText, Stack, Typography } from '@mui/material';
-import { Box } from '@mui/system';
+import { Box } from '@mui/material';
 
 const OrderExpandable = ({ orderId, buyerName, farmName, orderDate, itemsPurchased, firstName, lastName, address, city, state, zip, fulfilled }) => {
     const userContext = useContext(UserContext);
