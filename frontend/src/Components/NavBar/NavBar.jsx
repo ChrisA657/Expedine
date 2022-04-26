@@ -154,7 +154,7 @@ export const NavBar = () => {
                 <Box sx={{ flexGrow: 0 }}>
                   <Tooltip title="Open settings">
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                      <Avatar alt={userContext.userData?.userName} src="/static/images/avatar/2.jpg" />
+                      <Avatar alt={userContext.userData?.userName} src="https://smu.instructure.com/images/thumbnails/1257944/qzX5yC1AoRV9ybyzzkOq10a1SBuuKYDM3AiR8Uq8" />
                     </IconButton>
                   </Tooltip>
                   <Menu

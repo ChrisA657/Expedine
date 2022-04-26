@@ -158,9 +158,7 @@ const FarmPage = () => {
                 showEditItemDialog && <AddItemToFarmDialog
                     open={showEditItemDialog}
                     setOpen={setShowEditItemDialog}
-                    itemName={addItemDetails.name}
-                    itemId={addItemDetails.itemId}
-                    itemDescription={addItemDetails.description}
+                    
                     {...addItemDetails} />
             }
             {
