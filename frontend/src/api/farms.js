@@ -35,10 +35,15 @@ export const createFarm = (farm) => {
 
 }
 export const deleteFarmByID = (farm,id) => {
-    return axios.delete(`${apiEndpoint}/${id}`, apiConfig)
+    return axios.delete(`${apiEndpoint}/${id}`, apiConfig).catch(function (error) {
+        console.log(error.toJSON());
+      })
     
 }
 
 export const getFarmOwnerID = (id) =>{
-    return axios.get(`${apiEndpoint}/farmByOwner/${id}`, apiConfig)
+    return axios.get(`${apiEndpoint}/farmByOwner/${id}`, apiConfig).catch(function (error) {
+        console.log(error.toJSON());
+      })
 }
+ 

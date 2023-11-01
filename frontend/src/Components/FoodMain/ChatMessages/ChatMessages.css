@@ -1,0 +1,10 @@
+.chat-message-container{
+    display:flex;   
+
+}
+.chat-message{
+    display: flex;
+    margin-top: 6px;
+    margin-left: 10px;
+    min-height: 80px;
+}

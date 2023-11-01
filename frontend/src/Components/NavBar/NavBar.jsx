@@ -26,18 +26,13 @@ export const NavBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [pages, setPages] = React.useState([
-    { display: "Dashboard", path: "/dashboard" },
-    { display: "Feed", path: "/feed" },
+    { display: "Home", path: "/dashboard" },
+    { display: "Food", path: "/food"}
   ]);
 
   React.useEffect(()=>{
     if(userContext.userData?.isFarmer){
 
-   
-    getFarmOwnerID(userContext.userData.user_id).then((res)=>{
-        
-        setPages([...pages, {display: 'My Farm', path:`/farms/${res.data[0]?.farmer_id}`}]);
-    }) 
   }
 },[userContext])
   const handleOpenNavMenu = (event) => {
@@ -64,7 +59,7 @@ export const NavBar = () => {
 
   return (
     <nav className="main-navbar">
-      <AppBar position="static">
+      <AppBar position="static" sx={{ bgcolor: "black" }}>
         <Container maxWidth="3000px">
           <Toolbar disableGutters>
             <Typography
@@ -73,7 +68,7 @@ export const NavBar = () => {
               component="div"
               sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
             >
-              <NavLink to="/"> Farm Finders </NavLink>
+              <NavLink to="/"> Expedine </NavLink>
             </Typography>
 
             {/* Hamburger menu */}
@@ -127,12 +122,13 @@ export const NavBar = () => {
               component="span"
               sx={{ flexGrow: 1, mr: 2, display: { xs: 'flex', md: 'none' } }}
             >
-              <NavLink to="/"> Farm Finders </NavLink>
+              <NavLink to="/"> Expedine </NavLink>
             </Typography>
 
             {/* desktop page links */}
-            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-              {userContext.userData?.user_id && pages.map((page, index) => (
+            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, ml: 4 }}>
+              {//userContext.userData?.user_id &&  # this is to keep unlogged in users from seeing these tabs on the navbar
+              pages.map((page, index) => (
                 <NavLink key={index} to={page.path} >
                   <Button
                     variant='text'

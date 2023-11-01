@@ -11,16 +11,14 @@ import {
 import axios from 'axios';
 import { NavBar } from './Components/NavBar/NavBar';
 import { Home } from './Components/Home/Home';
-import { Feed } from './Components/Feed/Feed';
 import Login from './Components/Login/Login';
-import FarmPage from './Components/FarmPage/FarmPage';
 import { UserContext, UserProvider } from './Components/userContext';
 import { ProtectedContent, ProtectedRoute } from './Components/ProtectedContent';
 import { SignUp } from './Components/SignUp/SignUp';
-import Dashboard from './Components/Dashboard/Dashboard';
 import { PROTECTED_ROUTES } from './Components/ProtectedRoutes';
-import { EventProvider } from './Components/EventContext';
+
 import Reset from './Components/Reset/Reset';
+import FoodMain from './Components/FoodMain/FoodMain';
 
 // React functional component
 function App() {
@@ -49,7 +47,6 @@ function App() {
 
     return (
         <UserProvider>
-          <EventProvider>
             <Router>
               <NavBar />
               <Routes>
@@ -58,6 +55,7 @@ function App() {
                 <Route path='/login' element={<Login />} />
                 <Route path='/signup' element={<SignUp />} />
                 <Route path='/reset' element={<Reset />} />
+                <Route path='/food' element={<FoodMain/>} />
                 {
                   PROTECTED_ROUTES.map((route, index) => {
                     return <Route path={route.path}
@@ -71,7 +69,6 @@ function App() {
                 <Route path='*' element={<Navigate to='/' replace />} />
               </Routes>
             </Router>
-          </EventProvider>
         </UserProvider>
       )
     }
