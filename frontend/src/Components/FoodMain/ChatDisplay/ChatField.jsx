@@ -2,11 +2,15 @@ import { useEffect, useRef, useState } from "react";
 import ChatMessages from "../ChatMessages/ChatMessages";
 import './ChatField.css'
 import { TextField } from "@mui/material";
-const ChatField = ({chatText, onSubmit}) => {
-    const [currentChatText, setCurrentChatText] = useState(0)
+const ChatField = ({chatText, onSubmit, disable}) => {
+    const [currentChatText, setCurrentChatText] = useState('')
 
 
-    const handleSubmit = (e) =>{
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if(disable) {
+            return;
+        }
         onSubmit(e);
         setCurrentChatText('');
     }

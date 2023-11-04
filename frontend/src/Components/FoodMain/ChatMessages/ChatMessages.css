@@ -1,5 +1,6 @@
 .chat-message-container{
-    display:flex;   
+    display:flex;
+    flex-direction: column;   
 
 }
 .chat-message{
@@ -7,4 +8,14 @@
     margin-top: 6px;
     margin-left: 10px;
     min-height: 80px;
+}
+.chat-message-img{
+    width:60%;
+    height: 100%;
+    align-self: center;
+}
+.chat-message-img-and-button-container{
+    display:flex;
+    flex-direction: column;  
+    position: relative;
 }
