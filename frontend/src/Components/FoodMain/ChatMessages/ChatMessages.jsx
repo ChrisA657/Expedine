@@ -1,10 +1,12 @@
 import { Avatar, Button, IconButton } from '@mui/material';
 import { TypeAnimation } from 'react-type-animation';
 import { Typewriter, useTypewriter } from 'react-simple-typewriter'
+import AIWriter from "react-aiwriter";
 import './ChatMessages.css'
-import ItemCard from '../../common/ItemCard/ItemCard';
 import ChatImage from './ChatImage';
-const ChatMessages = ({message, func, repeat, speed, onDone, bottomRef}) => {
+import ItemCard from './ItemCard';
+import { useEffect } from 'react';
+const ChatMessages = ({message, items, repeat, speed, onDone, bottomRef, icon, chat_id}) => {
 
       const [messageText] = useTypewriter({
         loop: repeat,
@@ -13,35 +15,32 @@ const ChatMessages = ({message, func, repeat, speed, onDone, bottomRef}) => {
         cursor:false,
         deleteSpeed:0,
         delaySpeed:0,
-        onLoopDone: bottomRef ? ()=>onDone(bottomRef) : null
+        onLoopDone: bottomRef ? ()=> onDone(bottomRef) : null
 
       })
       
-      
+    useEffect(()=>{
+        console.log(message);
+    },[])
     return (
         <div className="chat-message-container"> 
-            
             <span className="chat-message"> 
-            <IconButton sx={{ p: 0, m: 0, alignItems: 'start', height: '40px', width: '40px'}}>
+            <IconButton sx={{ p: '4px', m: 0, alignItems: 'start', height: '40px', width: '40px'}}>
                     <Avatar sx = {{height:'100%', width: '100%'}} 
-                            src="https://smu.instructure.com/images/thumbnails/1257944/qzX5yC1AoRV9ybyzzkOq10a1SBuuKYDM3AiR8Uq8" />
+                            src={icon} />
             </IconButton>
-                {messageText}
+                <p>
+                    {message}
+                </p>
+            
             </span>
             <div className='chat-message-img-and-button-container'>
-                <div className='chat-message-img'>
-                    <ChatImage 
-                        name={'Friend Chicken'}
-                        price={'19.99'}
-                        img={'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=1000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8fA%3D%3D'}/>
-                </div>
-
-                <Button variant="contained"
-                sx={{width:'200px',height:'60px', alignSelf:'end'}}
-                onClick={() => {
-                    alert('clicked');
-                }}
-                >Add to List</Button>
+                {   
+                    items && items.map(itemId=>{
+                        return <ItemCard item_id={itemId}
+                                            chat_id={chat_id} />
+                    })
+                }
             </div>
         </div>
     )

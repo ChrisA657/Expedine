@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import './NavBar.css';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { UserContext } from '../userContext';
-import { getFarmOwnerID } from '../../api/farms';
+
 
 
 

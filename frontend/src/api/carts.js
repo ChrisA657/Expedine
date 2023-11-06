@@ -3,31 +3,43 @@
 import axios from "axios"
 import apiURL from "./APIURL"
 
-const apiEndpoint = apiURL + "cart"
-const apiConfig = {
-    headers: {
-        Authorization: "me"
+const apiEndpoint = 'http://localhost:8000/';
+
+
+export const getCart = async (chat_id) => {
+  try {
+    const response = await axios.get(`${apiEndpoint}cart/${chat_id}`)
+    console.log(response.data);
+    return response.data;
+     } catch (error){
+  console.log(error);
     }
-
 }
 
-//expected return, list of items user has added to their cart
-export const getCart = (user_id) => {
-    return axios.get(`${apiEndpoint}/${user_id}`);
-}
-export const addItemToCart = (item) =>{
-    console.log(item);
-    return axios.post(`${apiEndpoint}/`, item);
+export const addItemToCart = async(chat_id, item_id) => {
+    console.log('Cart_id: ' +chat_id+'item_id'+item_id);
+    try {
+        const response = await axios.post(`${apiEndpoint}cart/${chat_id}`, {
+          item_id: item_id
+        });
+        console.log(response.data);
+        return response.data;
+         } catch (error){
+      console.log(error);
+        }
 }
 
-export const deleteItemFromCart = (user_id, product_id) => {
-    console.log(user_id + " + " + product_id);
-    return axios.delete(`${apiEndpoint}/clear/${user_id}/${product_id}`, {user_id});
-}
-
-// create an order from the items in the carts
-// should remove the purchased # from the stock total of the item being bought
-// should create seperate orders for items belonging to different farms
-const checkout = (user_id) => {
-    axios.post(`${apiEndpoint}/${user_id}`);
+export const deleteItemFromCart = async(chat_id, item_id) => {
+    try {
+        console.log('Cart_id: ' +chat_id+'item_id'+item_id);
+        const response = await axios.delete(`${apiEndpoint}cart/${chat_id}`, {
+            data: {
+                item_id: item_id
+            }
+        });
+        console.log(response.data);
+        return response.data;
+         } catch (error){
+      console.log(error);
+        }
 }

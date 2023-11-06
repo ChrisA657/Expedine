@@ -2,33 +2,14 @@
 import apiURL from "./APIURL"
 import axios from "axios"
 // This is used to edit the items belonging to farms
+const apiEndpoint = 'http://localhost:8000/';
 
-const apiEndpoint = apiURL + "products"
-const apiConfig = {
-    headers: {
-        Authorization: "admin"
+export const getItemById = async (item_id)=> {
+    try {
+        const item = await axios.get(`${apiEndpoint}item/${item_id}`);
+        console.log(item);
+        return item.data;
+    } catch (error){
+      console.log(error);
     }
-
-}
-
-export const getItems = (params) => {
-    let _apiConfig = apiConfig;
-    if (params) {
-        _apiConfig.params = params;
-    }
-    axios.get(`${apiEndpoint}/`, apiConfig)
-}
-
-export const addItemToFarm = (itemDetails) => {
-    console.log(itemDetails);
-    return axios.post(`${apiEndpoint}/`, itemDetails)
-}
-export const editFarmItem = (itemDetails) => {
-    return axios.put(`${apiEndpoint}/${itemDetails.product_id}`, 
-        itemDetails
-    , apiConfig)
-}
-
-export const deleteItemFromFarm = (itemId) => {
-    return axios.delete(`${apiEndpoint}/${itemId}`, apiConfig)
 }
