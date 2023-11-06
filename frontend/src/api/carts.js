@@ -3,7 +3,7 @@
 import axios from "axios"
 import apiURL from "./APIURL"
 
-const apiEndpoint = 'http://localhost:8000/';
+const apiEndpoint = apiURL;
 
 
 export const getCart = async (chat_id) => {

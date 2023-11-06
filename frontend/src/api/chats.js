@@ -1,8 +1,7 @@
 import axios from "axios"
 import apiURL from "./APIURL"
-import OpenAI from 'openai';
 
-const apiEndpoint = 'http://localhost:8000/';
+const apiEndpoint = apiURL;
 
 
 export const createNewChat = async (user_id) => {
@@ -19,3 +18,13 @@ export const createNewChat = async (user_id) => {
 }
 
 
+export const getMessagesOfChat = async (chat_id)=> {
+    try {
+        const messages = await axios.get(`${apiEndpoint}chat/${chat_id}`);
+        console.log(messages);
+        return messages.data;
+    } catch (error){
+      console.log(error);
+    }
+   
+   }

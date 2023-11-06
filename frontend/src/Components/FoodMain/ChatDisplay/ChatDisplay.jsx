@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import ChatMessages from "../ChatMessages/ChatMessages";
 import './ChatDisplay.css'
-import { Button, TextField } from "@mui/material";
 import ChatField from "./ChatField";
-import { getMessagesOfChat, getResponse, sendNewMessage } from "../../../api/gptMessages";
-import { createNewChat } from "../../../api/chats";
+import {sendNewMessage } from "../../../api/gptMessages";
+import { createNewChat, getMessagesOfChat } from "../../../api/chats";
 //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
 const ChatDisplay = ({chat_id}) => {
     const [messages, setMessages] = useState([{icon:'', message:'Bye', func:'none'}])

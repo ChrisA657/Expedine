@@ -3,22 +3,18 @@ import Typography from '@mui/material/Typography';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 import { Button, Container, Paper, Stack } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/material';
-import { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../userContext';
+import { useEffect, useState } from 'react';
 import { deleteItemFromCart, getCart } from '../../api/carts';
-import { Link } from 'react-router-dom';
+
 const Cart = ({chat_id}) => {
     const [items, setItems] = useState([
-        
+         
     ])
-    const [orders, setOrders] = useState(null);
     const [total, setTotal] = useState(0);
-    const userContext = useContext(UserContext);
     const navigate = useNavigate();
     const redirectToCheckout = () => {
         navigate("/checkout");
@@ -40,7 +36,7 @@ const Cart = ({chat_id}) => {
         items.map(item => {
             total += item.Price * item.quantity;
         });
-        setOrders(orders);
+
         setTotal(total);
         console.log(items);
     }, [items])
@@ -53,7 +49,7 @@ const Cart = ({chat_id}) => {
         });
     }
 
-    if (items.length == 0) {
+    if (items.length === 0) {
         return <> 
         <Typography variant="h3" gutterBottom sx={{ textAlign: 'center' }}>
             Empty Cart
