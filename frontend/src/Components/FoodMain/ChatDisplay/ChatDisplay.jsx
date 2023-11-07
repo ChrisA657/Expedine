@@ -78,6 +78,7 @@ const ChatDisplay = ({chat_id}) => {
             setMessages(messages);
         }
         loadMessages().catch(console.error);
+        scrollToBottom(endOfMessages);
     }, [])
 
     useEffect(()=> {
@@ -91,8 +92,12 @@ const ChatDisplay = ({chat_id}) => {
     useEffect(()=> {
         let pMessages = processMessages(messages);
         setDisplayMessages(pMessages);
+        scrollToBottom(endOfMessages);
      }, [messages])
     
+     useEffect(()=> {
+        scrollToBottom(endOfMessages);
+     }, [displayMessages])
     return (
         <div className="chat-container">
 

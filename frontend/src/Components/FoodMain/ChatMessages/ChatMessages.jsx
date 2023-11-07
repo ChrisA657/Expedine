@@ -1,24 +1,9 @@
 import { Avatar, Button, IconButton } from '@mui/material';
-import { TypeAnimation } from 'react-type-animation';
-import { Typewriter, useTypewriter } from 'react-simple-typewriter'
-import AIWriter from "react-aiwriter";
 import './ChatMessages.css'
 import ChatImage from './ChatImage';
 import ItemCard from './ItemCard';
 import { useEffect } from 'react';
 const ChatMessages = ({message, items, repeat, speed, onDone, bottomRef, icon, chat_id}) => {
-
-      const [messageText] = useTypewriter({
-        loop: repeat,
-        words: [message],
-        typeSpeed: speed,
-        cursor:false,
-        deleteSpeed:0,
-        delaySpeed:0,
-        onLoopDone: bottomRef ? ()=> onDone(bottomRef) : null
-
-      })
-      
     useEffect(()=>{
         console.log(message);
     },[])

@@ -1,13 +1,7 @@
-const { Configuration, OpenAI } = require("openai");
+const { OpenAI } = require("openai");
 const pool = require('./db');
-const apiKey = "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";
-const apiEndpoint = 'https://api.openai.com/v1/chat/completions';
-const apiConfig = {
-    headers: {
-        Authorization: "me"
-    }
+const apiKey = process.env.GPT_API_KEY;
 
-}
 
 const functions = [
     {
