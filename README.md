@@ -3,7 +3,6 @@
 #### Also uses a MySQL DBaaS like AWS RDS or GCloud CloudSQL.
 
 - Express Server
-
 - React.JS Client
 
 # SETUP
@@ -15,9 +14,29 @@ You must have the following on your system:
 - Node
 - Docker
 - Docker-Compose
+- MySQL Database instance
 
 ## Initial setup
 First make sure to open a terminal window to `./backend` and `./frontend` and from there `npm install` in both directories to install the necessary packages. 
+
+On a fresh MYSQL server, run the script Expedine-Sql-Setup to create the appropriate database schema on your server.
+
+Now you must create an .env file in ./backend with the following.
+```
+# mysql database name
+MYSQL_DB=
+# mysql port (usually 3306)
+MYSQL_PORT=
+# mysql cloud database login user
+MYSQL_CLOUD_USER=
+# mysql cloud database login password
+MYSQL_CLOUD_PASS=
+# mysql cloud database host URL
+MYSQL_CLOUD_HOST=
+# GPT Personal API key
+GPT_API_KEY=
+```
+
 
 
 ## Running the project
