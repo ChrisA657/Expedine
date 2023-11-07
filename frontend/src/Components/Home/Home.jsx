@@ -7,7 +7,7 @@ export const Home = () => {
 
     return (
         <>
-
+        Welcome. Please Click Food tab.
             
 
 
