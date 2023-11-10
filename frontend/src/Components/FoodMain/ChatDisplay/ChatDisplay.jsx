@@ -4,13 +4,13 @@ import './ChatDisplay.css'
 import ChatField from "./ChatField";
 import {sendNewMessage } from "../../../api/gptMessages";
 import { createNewChat, getMessagesOfChat } from "../../../api/chats";
-//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
+
 const ChatDisplay = ({chat_id}) => {
     const [messages, setMessages] = useState([{icon:'', message:'Bye', func:'none'}])
     const [displayMessages, setDisplayMessages] = useState([]);
     const endOfMessages = useRef();
     const [blockChatInput, setBlockChatInput]= useState(false);
-    const [user_id, setUserID] = useState(3);
+    const [user_id, setUserID] = useState(2);
 
     const scrollToBottom = (ref) => {
         if(ref?.current?.scrollIntoView) {
@@ -22,7 +22,7 @@ const ChatDisplay = ({chat_id}) => {
         console.log(messages);
         let processedmessages = [];
         let currentFunctions = [];
-        messages.map(message => {
+        messages?.map(message => {
             if(message.sender_role !== 'system' || message.function_call === 1 ) {
                 if(message.function_call === 1 ){
                     currentFunctions.push(message.function_arg);
@@ -59,8 +59,13 @@ const ChatDisplay = ({chat_id}) => {
         }
         //If this line is finished, we have created new entrees in our chat based on the given prompt, we should update our messages list
         const response = await sendNewMessage(newMessage);
-
-    
+        console.log(response);
+        if (response && response.code ==='ERR_BAD_REQUEST') {
+            alert('API Error, try again');
+            setMessages(messages => messages.slice(0, -1));
+            setBlockChatInput(false);
+            return;
+        }
         const updatedMessages = await getMessages(chat_id);
         setMessages(updatedMessages);
         setBlockChatInput(false);
@@ -68,7 +73,7 @@ const ChatDisplay = ({chat_id}) => {
 
     const getMessages = async(chat_id)=> {
         const messages = await getMessagesOfChat(chat_id);
-        return messages.data;
+        return messages?.data;
     }
     useEffect(()=> {
         const loadMessages = async() => {

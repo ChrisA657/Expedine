@@ -269,7 +269,18 @@ module.exports = function routes(app, logger) {
     // Handle new messages from user 
     app.post('/message', async (req, res) => {
       let message = req.body.data;
-      let newMessages = await getResponse(message);
+      let newMessages;
+      try {
+        newMessages = await getResponse(message);
+      } catch (error) {
+        console.log(error);
+        res.status(400).json({
+          "data": [],
+          "error": error
+        })
+        return;
+      }
+      
       //console.log(newMessages);
       // obtain a connection from our pool of connections
       pool.getConnection(function (err, connection){

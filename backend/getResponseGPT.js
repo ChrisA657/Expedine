@@ -25,8 +25,10 @@ module.exports.getResponse = async (message) => {
     try{
         const openai = new OpenAI({
             apiKey: apiKey 
-          });
+        });
       let shouldContinue = true;
+      let APICallError = false;
+      
       let chat_id = message.chat_id;
       let user_id = message.user_id;
       let currentConversation = [];
@@ -217,7 +219,8 @@ module.exports.getResponse = async (message) => {
             "Name" : "CHICKEN WONTON TACOS",
             "Description" : "Sweet Asian chile marinated grilled chicken stuffed into crispy wonton shells topped with our signature coleslaw and cilantro."
         }    
- `}];
+        `}];
+
     //build conversationHistory from db call
     
     //get messages from db
@@ -227,12 +230,14 @@ module.exports.getResponse = async (message) => {
                 if(err){
                   // if there is an issue obtaining a connection, release the connection instance and log the error
                   console.log('Problem obtaining MySQL connection',err)
+                  error = true;
                 } else {
                   // if there is no issue obtaining a connection, execute query and release connection
                     connection.query('SELECT * FROM Messages WHERE chat_id = ? ORDER BY sent_at', [chat_id], function (err, rows, fields) {
                     connection.release();
                     if (err) {
                       console.log("Error while fetching values: \n", err);
+                      error = true;
                     } else {
                       resolve(rows);
                     }
@@ -254,19 +259,27 @@ module.exports.getResponse = async (message) => {
     currentConversation.push({role: "user", "content": message.message_content})
 
     //conversationHistory.forEach(obj => console.log(obj));
+    const APItimeout = (ms) => new Promise((resolve, reject) => 
+        setTimeout(() => reject(new Error('Timeout API')), ms)
+    );
+    
     console.log('Running conversation with GPT');
      while (shouldContinue) {
       try {
-        const response = await openai.chat.completions.create({
-            model: "gpt-4",
+        const response = await Promise.race([
+            openai.chat.completions.create({
+            model: "gpt-3.5-turbo",
             messages: conversationHistory,
             functions: functions,
             function_call: "auto",  // auto is default, but we'll be explicit
             temperature:0.2
-        });
-        
+        }),
+            APItimeout(15000)
+        ]) 
+
         console.log('Received response from GPT');
         console.log(response);
+
         const gptResponse = response.choices[0].message;
         console.log(response.choices[0]);
         // Handle function calls
@@ -306,19 +319,28 @@ module.exports.getResponse = async (message) => {
       } catch (error) {
         console.error('Error during API call:', error);
         shouldContinue = false;
-        return;
+        APICallError = true;
       }
     }
+    console.log(APICallError);
+    if(APICallError){
+        throw new Error("GPT API Error");
+    }
     console.log('currentConversation:', currentConversation.map(obj => JSON.stringify(obj)));
-    let processedResponses = processResponsesForDb(currentConversation, chat_id, user_id);
-    console.log("Messages to add to db:"+ processedResponses);
 
-    //store the new messages in the db.
-    return processedResponses;
+    if(!APICallError){
+        let processedResponses = processResponsesForDb(currentConversation, chat_id, user_id);
+        console.log("Messages to add to db:"+ processedResponses);
+        //store the new messages in the db.
+        return processedResponses;
+    }
+    
     } catch (error) {
         console.error(error);
+        throw(error);
       }
   };
+
   const processResponsesForDb = (responses, chat_id, user_id) => {
     let messagesP = [];
     responses.map(response=> {

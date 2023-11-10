@@ -1,0 +1,23 @@
+.menu-container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-width:100%;
+    gap: 20px;
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    border-radius: 10px;
+    background: #f9f9f9;
+    justify-content: center;
+}
+
+.menu-container > *{
+    flex: 0 0 auto; /* Do not grow or shrink, but allow basis to be auto */
+    width: 200px; /* width of each card */
+    margin: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    border-radius: 10px;
+    background: #ffffff;
+    text-align: center;
+}

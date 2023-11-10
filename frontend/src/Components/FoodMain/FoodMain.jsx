@@ -4,10 +4,11 @@ import ChatDisplay from "./ChatDisplay/ChatDisplay";
 import './FoodMain.css';
 import { Button } from "@mui/material";
 import { createNewChat } from "../../api/chats";
+import Menu from "./Menu/Menu";
 
 const FoodMain = () => {
     const [activeTab, setActiveTab] = useState('chat');
-    const [chat_id, setChatID] = useState(26);
+    const [chat_id, setChatID] = useState(1);
     const handleTabClick = (tab) => {
         setActiveTab(tab);
     };
@@ -28,11 +29,19 @@ const FoodMain = () => {
                     Chat
                 </button>
                 <button
+                    className={`tab-button ${activeTab === 'menu' ? 'active' : ''}`}
+                    onClick={() => handleTabClick('menu')}
+                >
+                    Menu
+                </button>
+
+                <button
                     className={`tab-button ${activeTab === 'cart' ? 'active' : ''}`}
                     onClick={() => handleTabClick('cart')}
                 >
                     Cart
                 </button>
+                
                 
             </div>
             <Button variant="contained"
@@ -42,6 +51,7 @@ const FoodMain = () => {
                 }}
                 >New Chat</Button>
             {activeTab === 'chat' && <ChatDisplay chat_id={chat_id} />}
+            {activeTab === 'menu' && <Menu chat_id={chat_id} />}
             {activeTab === 'cart' && <Cart chat_id={chat_id} />}
         </div>
     );
