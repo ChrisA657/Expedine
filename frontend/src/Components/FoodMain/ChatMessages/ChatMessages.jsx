@@ -13,14 +13,15 @@ const ChatMessages = ({message, items, repeat, speed, onDone, bottomRef, icon, c
                     <Avatar sx = {{height:'100%', width: '100%'}} 
                             src={icon} />
             </IconButton>
-                <p>
+               
+                <div style={{whiteSpace: "pre-line"}}>
                     {message}
-                </p>
-            
+                </div>
+               
             </span>
             <div className='chat-message-img-and-button-container'>
                 {   
-                    items && items.map(itemId=>{
+                    items && items.map(itemId => {
                         return <ItemCard item_id={itemId}
                                             chat_id={chat_id} />
                     })
