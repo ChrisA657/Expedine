@@ -13,11 +13,9 @@ const Menu = ({chat_id}) => {
     return(
         <div className='menu-container'>
            {
-
-          
-            [...Array(itemCount)].map((i)=> {
+            [...Array(37)].map((j,i)=> {
                     return <ItemCard 
-                        item_id={i}
+                        item_id={i+1}
                         chat_id={chat_id}/>
                     }
                 )
