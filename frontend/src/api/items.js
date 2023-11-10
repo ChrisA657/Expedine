@@ -1,7 +1,7 @@
 
 import axios from "axios"
 
-const apiEndpoint = 'http://localhost:8000/';
+const apiEndpoint = apiURL;
 
 export const getItemById = async (item_id)=> {
     try {
