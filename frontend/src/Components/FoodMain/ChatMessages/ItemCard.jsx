@@ -2,9 +2,9 @@
 import { useEffect, useState } from 'react';
 import './ItemCard.css'
 import './ChatMessages.css'
-import ChatImage from './ChatImage';
 import { getItemById } from '../../../api/items';
 import { Button } from '@mui/material';
+import {addItemToCart} from "../../../api/carts";
 
 const ItemCard = ({item_id, chat_id}) => {
     const [item, setItem] = useState();
@@ -17,16 +17,24 @@ const ItemCard = ({item_id, chat_id}) => {
         loadItem().catch(console.error);
     }, [])
       
-      
+    const handleAdd = async()=> {
+        await addItemToCart(chat_id, item_id);
+        alert('Item added');
+    }
     return (
         <div className='chat-message-img-and-button-container'>
             <div className='chat-message-img'>
-                        <ChatImage
-                            name={item?.Name}
-                            price={item?.Price}
-                            img={item?.Image}
-                            item_id={item_id}
-                            chat_id={chat_id}/>
+                <div class="chat-img-container">
+                    <div> {item?.Name} </div>
+                    <img src={item?.Image} alt="Dish Image"/>
+                    <div className='price-label'> ${item?.Price} </div>
+                    <Button variant="contained"
+                        sx={{width:'200px',height:'60px', alignSelf:'end'}}
+                        onClick={() => {
+                            handleAdd();
+                        }}
+                        >Add to List</Button>
+                </div>
             </div>
         </div>
     )

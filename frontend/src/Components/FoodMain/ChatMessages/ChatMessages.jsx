@@ -1,6 +1,5 @@
-import { Avatar, Button, IconButton } from '@mui/material';
+import { Avatar,IconButton } from '@mui/material';
 import './ChatMessages.css'
-import ChatImage from './ChatImage';
 import ItemCard from './ItemCard';
 import { useEffect } from 'react';
 const ChatMessages = ({message, items, repeat, speed, onDone, bottomRef, icon, chat_id}) => {

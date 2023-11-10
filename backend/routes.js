@@ -280,7 +280,7 @@ module.exports = function routes(app, logger) {
         } else {
           // if there is no issue obtaining a connection, execute query and release connection
           sql ='INSERT INTO Messages(chat_id, sender_id, sender_role, message_content, function_call,function_arg) VALUES ?';
-          message_array = newMessages?.map(message => [message.chat_id, message.user_id, message.sender_role, message.message_content, message.function_call,message.function_arg])
+          message_array = newMessages.map(message => [message.chat_id, message.user_id, message.sender_role, message.message_content, message.function_call,message.function_arg])
 
           console.log(message_array);
           connection.query(sql, [message_array], function (err, rows, fields) {
@@ -289,7 +289,7 @@ module.exports = function routes(app, logger) {
               logger.error("Error while fetching values: \n", err);
               res.status(400).json({
                 "data": [],
-                "error": "Error obtaining values"
+                "error": "Error adding new message"
               })
             } else {
               res.status(200).json({

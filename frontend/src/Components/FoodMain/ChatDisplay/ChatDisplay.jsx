@@ -100,7 +100,6 @@ const ChatDisplay = ({chat_id}) => {
      }, [displayMessages])
     return (
         <div className="chat-container">
-
             <div className="messages-container">
                 {
                     displayMessages?.map(message => { return (

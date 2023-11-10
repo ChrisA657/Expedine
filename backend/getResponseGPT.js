@@ -258,7 +258,7 @@ module.exports.getResponse = async (message) => {
      while (shouldContinue) {
       try {
         const response = await openai.chat.completions.create({
-            model: "gpt-4",
+            model: "gpt-3.5-turbo",
             messages: conversationHistory,
             functions: functions,
             function_call: "auto",  // auto is default, but we'll be explicit
